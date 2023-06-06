@@ -1,0 +1,695 @@
+\documentclass[a4paper,12pt]{article}
+
+% input on every document for encoding
+\usepackage[utf8]{inputenc}
+% for control over document margins
+\usepackage[margin=1in]{geometry}
+% Used to remove the indents from paragraphs
+\usepackage{parskip}
+% for images
+\usepackage{graphicx}
+% for adjusting images
+\usepackage[export]{adjustbox}
+% added for better equation editing and alignment
+\usepackage{amsmath, amssymb, amsthm}
+% added to make terminology section look fancier with the definitions on new lines
+\usepackage[shortlabels]{enumitem}
+% for links, import this last
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue
+}
+
+% Theorem environment setup
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+
+% Example environment setup
+\theoremstyle{definition}
+\newtheorem{example}{Example}[subsection]
+
+
+% Style commands
+% for better centered circles (credit to https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers)
+\newcommand{\circlemath}[1]{\raisebox{0.5pt}{\textcircled{\raisebox{-.9pt} #1}}}
+
+% Helpful commands for linear algebra (delete if not using)
+% elementary row operations (depends on amsmath package)
+% used for a visual representatation of elementary row operations with arrows and row numbers.
+
+% replace command:
+% first argument is the row that will be replaced
+% second argument is the row that will be scaled and added to the row being replaced
+% third argument is the value by which the row being added to the row being replaced will be scaled
+\newcommand{\replace}[3]{\circlemath{#1} \leftarrow \circlemath{#1} + \text{#3}\textcircled{#2}}
+
+% replace command with right arrow below
+% arguments are the same as regular replace command
+\newcommand{\replacerightarr}[3]{\xrightarrow{\replace{#1}{#2}{#3}}}
+
+% interchange command
+% first argument is one row to be swapped
+% second argument is the row to swap it with
+\newcommand{\intchng}[2]{\circlemath{#1} \leftrightarrow \circlemath{#2}}
+
+% interchange command with right arrow below
+% arguments are the same as regular interchange command
+\newcommand{\intchngrightarr}[2]{\xrightarrow{\intchng{#1}{#2}}}
+
+% scaling command
+% first argument is the row to be scaled
+% second argument is the amount to scale it by
+\newcommand{\scalerow}[2]{\text{#2}\circlemath{#1}}
+
+% scaling command with right arrow below
+% arguments are the same as regular scalerow command
+\newcommand{\scalerowrightarr}[2]{\xrightarrow{\scalerow{#1}{#2}}}
+
+\title{MATH 2940 Study Guide}
+\author{Matthew Mentis-Cort}
+\date{January 24, 2023}
+% renames table of contents
+\renewcommand*\contentsname{Overview}
+
+\begin{document}
+	\maketitle
+	
+	% generates table of contents
+	\tableofcontents
+	\newpage
+	
+	% Textbook
+	\section{Textbook Information}
+	Lay, Lay, McDonald, “Linear Algebra with Applications”, 6th edition
+	% Aids
+	\section{Aids}
+	\href{https://matrixcalc.org/}{Matrix Calculator}
+	
+	\section{Sources}
+	\begin{enumerate}
+		\item Lay, Lay, McDonald, “Linear Algebra with Applications”, 6th edition
+		
+		\item \href{https://canvas.cornell.edu/courses/48198}{Cornell Spring 2023 semester Canvas notes (Professor Frans Schalekamp)}
+	\end{enumerate}
+	\newpage
+	
+	% Notes
+	\section{Syntax}
+	\begin{itemize}
+		\item \textbf{linear equations} are basically a diagonal line on a graph
+		\item a \textbf{system of linear equations (SoE)} is a group of linear equations with the same variables
+	\end{itemize}
+
+	\subsection{Solving Linear Equations}
+	\begin{itemize}
+		\item SoEs can have one of three solutions:
+		\begin{enumerate}
+			\item exactly one solution
+			\item no solutions
+			\item infinitely many solutions
+		\end{enumerate}
+		\item linear equations can be quite long and cumbersome to write out, so we want a way to make the method for solving them more precise, and a shorter notation for writing them. Thus, \textbf{augmented} and \textbf{coefficient matrices}
+		
+		\begin{example}
+			\begin{align*}
+				x_1 - 2x_2 + x_3 &= 0\\
+				x_2 - 8x_3 &= 8\\
+				-4x_1 + 5x_2 + 9x_3 &= -9
+			\end{align*}
+			\begin{itemize}
+				\item augmented matrix (includes the right-hand sides of the equations):
+				\begin{equation*}
+					\begin{bmatrix}
+						1 & -2 & 1 & 0\\
+						0 & 1 & -8 & 0\\
+						-4 & 5 & 9 & -9
+					\end{bmatrix}
+				\end{equation*}
+				\item coefficient matrix (does not include right-hand sides of equations)
+				\begin{equation*}
+					\begin{bmatrix}
+						1 & -2 & 1\\
+						0 & 1 & -8\\
+						-4 & 5 & 9
+					\end{bmatrix}
+				\end{equation*}
+			\end{itemize}
+		\end{example}
+		
+	\end{itemize}
+
+	\subsection{Matrices}
+	\textbf{Elementary Row operations (EROs)}
+	\begin{enumerate}
+		\item \textbf{Replacement}
+		\begin{description}
+			\item Replacing row by sum of itself and multiple of another row
+		\end{description}
+		
+		\item \textbf{Scaling}
+		\begin{description}
+			\item Multiply all entries in a row with a nonzero constant
+		\end{description}
+	
+		\item \textbf{Interchange}
+		\begin{description}
+			\item Swap two rows
+		\end{description}
+	\end{enumerate}
+	
+	\textbf{Solving SoEs with Matrices}
+	\begin{itemize}
+		\item use \nameref{sec:g-j-elim} to get matrices in reduced echelon form and solve them
+		
+		\item once the \textbf{forward phase of G-J elimination} is done, the resulting matrix can be used to determine the solutions of the system:
+		\begin{itemize}
+			\item if there is a row such that 0 = b (where b is nonzero), i.e. a row that looks like
+			$\begin{bmatrix}
+				0 & 0 & 0 & \ldots & 0 & b
+			\end{bmatrix}$
+			, then the system is inconsistent. Otherwise, the system is consistent
+		\end{itemize}
+		
+		\item after \textbf{backward phase} is done, \textbf{parametric description} of solution of system can be determined
+		
+		\begin{itemize}
+			\item translate the matrix back into SoE. variables corresponding to pivot columns are \textbf{basic variables}, and the other variables are \textbf{free variables}.
+			
+			\item Write the basic variables in terms of the free variables. This is known as the parametric description of the solution set.
+		\end{itemize}
+		
+		\begin{example}
+			Reduce
+			$\begin{bmatrix}
+				0 & -3 & -6 & 4 & 9\\
+				-1 & -2 & -1 & 3 & 1\\
+				-2 & -3 & 0 & 3 & -1\\
+				1 & 4 & 5 & -9 & -7
+			\end{bmatrix}$
+			to reduced row echelon form.
+			
+			In the below example, pivot positions are circled.
+			
+			\begin{flalign*}
+				\begin{bmatrix}
+					0 & -3 & -6 & 4 & 9\\
+					-1 & -2 & -1 & 3 & 1\\
+					-2 & -3 & 0 & 3 & -1\\
+					1 & 4 & 5 & -9 & -7
+				\end{bmatrix}\\
+				\intchngrightarr{1}{4}
+				\begin{bmatrix}
+					\circlemath{1} & 4 & 5 & -9 & -7\\
+					-1 & -2 & -1 & 3 & 1\\
+					-2 & -3 & 0 & 3 & -1\\
+					0 & -3 & -6 & 4 & 9
+				\end{bmatrix}\\
+				\replacerightarr{2}{1}{1}
+				\begin{bmatrix}
+					1 & 4 & 5 & -9 & -7\\
+					0 & 2 & 4 & 6 & -6\\
+					-2 & -3 & 0 & 3 & -1\\
+					0 & -3 & -6 & 4 & 9
+				\end{bmatrix}\\
+				\replacerightarr{3}{1}{2}
+				\begin{bmatrix}
+					1 & 4 & 5 & -9 & -7\\
+					0 & \circlemath{2} & 4 & 6 & -6\\
+					0 & 5 & 10 & -15 & -15\\
+					0 & -3 & -6 & 4 & 9
+				\end{bmatrix}\\
+				\replacerightarr{3}{2}{-(5/2)}
+				\begin{bmatrix}
+					1 & 4 & 5 & -9 & -7\\
+					0 & 2 & 4 & 6 & -6\\
+					0 & 0 & 0 & 0 & 0\\
+					0 & -3 & -6 & 4 & 9
+				\end{bmatrix}\\
+				\replacerightarr{4}{2}{-(3/2)}
+				\begin{bmatrix}
+					1 & 4 & 5 & -9 & -7\\
+					0 & 2 & 4 & 6 & -6\\
+					0 & 0 & 0 & 0 & 0\\
+					0 & 0 & 0 & -5 & 0
+				\end{bmatrix}\\
+				\begin{bmatrix}
+					1 & 4 & 5 & -9 & -7\\
+					0 & 2 & 4 & 6 & -6\\
+					0 & 0 & 0 & 0 & 0\\
+					0 & 0 & 0 & -5 & 0
+				\end{bmatrix}
+			\end{flalign*}
+		\end{example}
+	\end{itemize}
+
+	\subsection{Vectors}
+	\begin{itemize}
+		\item solution to matrix can be written as a list of vectors
+		$\begin{bmatrix}
+			x_1\\
+			x_2\\
+			\vdots\\
+			x_n
+		\end{bmatrix}$
+	
+		\item vectors are equal when all entries are the same
+	\end{itemize}
+
+	\textbf{Operations}
+	\begin{itemize}
+		\item Addition
+		\begin{itemize}
+			\item $\vec{u} + \vec{v}$ defined if $\vec{u}$ and $\vec{v}$ have the same number of entries
+			
+			\item $\vec{u} + \vec{v} =
+			\begin{bmatrix}
+				u_1\\
+				u_2\\
+				\vdots\\
+				u_n
+			\end{bmatrix}
+			+
+			\begin{bmatrix}
+				v_1\\
+				v_2\\
+				\vdots\\
+				v_n
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				u_1 + v_1\\
+				u_2 + v_2\\
+				\vdots\\
+				u_n + v_n
+			\end{bmatrix}$
+		\end{itemize}
+		\begin{figure}[h!]
+			\includegraphics[width=0.5\paperwidth, center]{images/vector-addition.PNG}
+		\end{figure}
+	
+		\item Multiplication
+		\begin{itemize}
+			\item scalar (real number) times vector only
+			\item $c\vec{u} = c
+			\begin{bmatrix}
+				u_1\\
+				u_2\\
+				\vdots\\
+				u_n
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				cu_1\\
+				cu_2\\
+				\vdots\\
+				cu_n
+			\end{bmatrix}$
+		\end{itemize}
+		\begin{figure}[h!]
+			\includegraphics[width=0.8\paperwidth]{images/vector-multiplication.PNG}
+		\end{figure}
+	\end{itemize}
+	
+	\textbf{Properties}
+	\begin{itemize}
+		\item zero vector = $\vec{0} =
+		\begin{bmatrix}
+			0\\
+			0\\
+			\vdots\\
+			0
+		\end{bmatrix}$
+		\item $-\vec{u} = (-1)\vec{u}$
+		\item $\vec{u} + \vec{v} = \vec{v} + \vec{u}$
+		\item $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$
+		\item $\vec{u} + \vec{0} = \vec{0} + \vec{u} = \vec{u}$
+		\item $-\vec{u} + \vec{u} = \vec{0}$
+		\item $(c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v}$
+		\item $(c + d)\vec{u} = c\vec{u} + d\vec{u}$
+		\item $c(d\vec{u}) = (cd)\vec{u}$
+		\item 1$\vec{u} = \vec{u}$
+	\end{itemize}
+	
+	\textbf{Linear Combinations}
+	\begin{itemize}
+		\item a \textbf{linear combination} is a vector written as the sum of other vectors
+		\item the equation $\vec{y} = c_1\vec{v_1} + \ldots + c_p\vec{v_p}$
+		\item $v_1,v_2,...,v_p$ are vectors $c_1,c_2,...,c_p$ are \textbf{weights}
+		\item $\vec{y}$ is written as a linear combination of $v_1,v_2,...,v_p$ with weights $c_1,c_2,...,c_p$
+		
+		\begin{example}
+			$\begin{bmatrix}
+				4\\
+				5
+			\end{bmatrix}$
+			is a linear combination of
+			$\begin{bmatrix}
+				1\\
+				1
+			\end{bmatrix}$
+			and
+			$\begin{bmatrix}
+				2\\
+				3
+			\end{bmatrix}$
+			because
+			$\begin{bmatrix}
+				4\\
+				5
+			\end{bmatrix}
+			=
+			2
+			\begin{bmatrix}
+				1\\
+				1
+			\end{bmatrix}
+			+
+			1
+			\begin{bmatrix}
+				2\\
+				3
+			\end{bmatrix}$.
+			The weights are 2 for
+			$\begin{bmatrix}
+				1\\
+				1
+			\end{bmatrix}$
+			and 1 for
+			$\begin{bmatrix}
+				2\\
+				3
+			\end{bmatrix}$.
+		\end{example}
+	\end{itemize}
+	
+	\subsection{Span}
+	\begin{itemize}
+		\item because of our definition of linear combinations, we have the following relation:
+		
+		a vector equation
+		\begin{equation*}
+			x_1\vec{a_1} + x_2\vec{a_2} + \ldots + x_n\vec{a_n} = \vec{b}
+		\end{equation*}
+		has the same solution set as the linear system with augmented matrix
+		\begin{equation*}
+			\begin{bmatrix}
+				\vec{a_1} & \vec{a_2} & \ldots & \vec{a_n} & \vec{b}
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item solving this matrix is equivalent to finding weights in a linear combination
+		
+		\item the \textbf{span} of a set of vectors is set of all possible linear combinations of those vectors
+		
+		\item if an augmented matrix $\begin{bmatrix}
+			\vec{a_1} & \vec{a_2} & \ldots & \vec{a_n} & \vec{b}
+		\end{bmatrix}$
+		is consistent, then $\vec{b}$ is in the span of $\{\vec{a_1}, \vec{a_2}, \ldots, \vec{a_n}\}$, or, in other words, $\vec{b} \in span\{\vec{a_1}, \vec{a_2}, \ldots, \vec{a_n}\}$
+		
+		\item the span of two vectors is a plane
+		
+		\item geometric intuition:
+		
+		\begin{figure}[h!]
+			\includegraphics[width=0.5\paperwidth, center]{images/span.PNG}
+		\end{figure}
+	\end{itemize}
+	
+	\subsection{The Matrix Equation $A\vec{x} = \vec{b}$}
+	\begin{itemize}
+		\item fundamental idea of linear algebra is to view linear combo of vectors as product of matrix and vector (matrix vector multiplication)
+		
+		\item $A\vec{x}$ only defined when \# columns of A = \# entries of $\vec{x}$
+		
+		\item $A\vec{x}$ is a vector
+		
+		\item Ex:
+		\begin{align*}
+			\begin{bmatrix}
+				1 & 2 & -1\\
+				5 & 6 & 3
+			\end{bmatrix}
+			\begin{bmatrix}
+				2\\
+				7\\
+				3
+			\end{bmatrix}&=
+			2
+			\begin{bmatrix}
+				1\\
+				5
+			\end{bmatrix}
+			+ 7
+			\begin{bmatrix}
+				2\\
+				6
+			\end{bmatrix}
+			+ 3
+			\begin{bmatrix}
+				-1\\
+				3
+			\end{bmatrix}\\
+			&=
+			\begin{bmatrix}
+				2\\
+				10
+			\end{bmatrix}
+			+
+			\begin{bmatrix}
+				14\\
+				42
+			\end{bmatrix}
+			+
+			\begin{bmatrix}
+				-3\\
+				9
+			\end{bmatrix}\\
+			&=
+			\begin{bmatrix}
+				13\\
+				61
+			\end{bmatrix}
+		\end{align*}
+		
+		\item See \autoref{thm:A-x-b-thm} and \autoref{thm:A-x-b-relation-thm}
+		
+		\item use \nameref{sec:g-j-elim} see if system is consistent or not
+		
+		\item Properties of $A\vec{x}$ multiplication: \autoref{thm:A-x-b-props}
+	\end{itemize}
+	
+	\subsection{Homogenous and Nonhomogenous SoEs, and Parametric Vector Form}
+	\begin{itemize}
+		\item \textbf{homogenous} SoEs are SoEs hat cna be written as $A\vec{x} = \vec{0}$
+		
+		\item homogenous SoEs are always consistent ($\vec{a} = \vec{0}$ is always solution, which is called the \textbf{trivial solution})
+		
+		\item care about nontrivial solutions to the equation since we know that there is always a solution
+		
+		\item can write solution set of matrix equation as a vector using parametric description of solution set, known as \textbf{parametric vector form}
+		
+		\item to write in parametric vector form, first write out $\vec{x}$ as a vector, then "extract" free variables (look at math notes for continutation)
+		
+		\begin{example}
+			The vector form of the parametric description
+			\begin{align*}
+				x_1 &= (4/3)x_3\\
+				x_2 &= 0\\
+				x_3 &\:is \:free
+			\end{align*}
+			is
+			\begin{equation*}
+				\vec{x} =
+				\begin{bmatrix}
+					(4/3)x_3\\
+					0\\
+					x_3
+				\end{bmatrix}
+				= x_3
+				\begin{bmatrix}
+					4/3\\
+					0\\
+					1
+				\end{bmatrix}
+			\end{equation*}
+		\end{example}
+	\end{itemize}
+	\newpage
+	
+	\section{Important Theorems}
+	\begin{theorem}
+		Each matrix is row equivalent to one and only one reduced echelon matrix.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:A-x-b-thm}
+		When A is $m \times n$ matrix with columns $a_1,\ldots,a_n$, and $\vec{b}$ in $\mathbb{R}^m$,
+		\begin{equation*}
+			A\vec{x} = \vec{b}
+		\end{equation*}
+		has same solution set as
+		\begin{equation*}
+			x_1\vec{a_1} + x_2\vec{a_2} + \ldots + x_n\vec{a_n} = \vec{b}
+		\end{equation*}
+		which has same solution set as 
+		\begin{equation*}
+			\begin{bmatrix}
+				\vec{a_1} & \vec{a_2} & \ldots & \vec{a_n} & \vec{b}
+			\end{bmatrix}
+		\end{equation*}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:A-x-b-relation-thm}
+		Let $A$ be an $m \times n$ matrix (coefficient matrix). Then the following statements are logically equivalent.
+		That is, for a particular $A$, either they are all true statements or they are all false.
+		\begin{enumerate}[a.]
+			\item For each $\vec{b}$ in $\mathbb{R} ^ m$, the equation $A\vec{x} = \vec{b}$ has a solution.
+			
+			\item Each $\vec{b}$ in $\mathbb{R} ^ m$ is a linear combination of the columns of A.
+			
+			\item The columns of $A$ span $\mathbb{R} ^ m$.
+			
+			\item A has a pivot position in every row.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:A-x-b-props}
+		Let $A$ be an $m \times n$ matrix, $\vec{u}$ and $\vec{v}$ are vectors in $\mathbb{R}^n$, and $c$ is a scalar, then:
+		
+		\begin{enumerate}[a.]
+			\item $A(\vec{u} + \vec{v}) = A\vec{u} + A\vec{v}$
+			
+			\item $A(c\vec{u}) = c(A\vec{u})$
+		\end{enumerate}
+	\end{theorem}
+	\newpage
+	
+	% Toolbox
+	\section{Toolbox}
+	\textbf{Make sure to check your work after using any of these methods!}
+	
+	\subsection{Linear Equations}
+	To solve systems of linear equations:
+	\begin{enumerate}
+		\item Variable Elimination
+		\begin{itemize}
+			\item System of 2 variables
+			\begin{enumerate}
+				\item Eliminate one of the variables by adding or subtracting the equations together. This will give you can equation to solve for the other variable. Solve for this value.
+				\item Plug the value for the variable that was just solved for into either of the equations to solve for the value of the other variable.
+			\end{enumerate}
+			\item System of 3 or more variables
+			\begin{enumerate}
+				\item Choose a variable in one equation to eliminate from the other equations. Eliminate this variable by adding or subtracting the equations together. Repeat the first step until you are able to solve for one variable.
+				\item Plug the value for the variable that was just solved for into either of the equations to solve for the value of the another variable. Repeat this step until all variables are solved for.
+			\end{enumerate}
+		\end{itemize}
+		\item Substitution
+		\begin{enumerate}
+			\item Define one variable in terms of another, and plug it into all other equations. Use this equation to solve for this variable. If the system of equations has 3 or more equations, use all the other equations to solve for one variable in terms of another.
+		\end{enumerate}
+	\end{enumerate}
+
+	\subsection{Gauss-Jordan Elimination}
+	\label{sec:g-j-elim}
+	\begin{enumerate}
+		\item Create augmented matrix for the SoE.
+		
+		\item Use first nonzero entry in the leftmost column as first pivot. If necessary, interchange rows so that there is a nonzero entry in the top entry of the first column.
+		
+		\item Use EROs to create all 0s below the pivot position in the first column.
+		
+		\item Ignore the row with the pivot position, and apply steps 2-3 to the submatrix that remains until there are no more nonzero rows to reduce.
+		\begin{itemize}
+			\item after this step, one can determine the pivot positions and pivot columns of the matrix
+		\end{itemize}
+		
+		\item Create zeroes above each pivot, starting with the rightmost pivot. If a pivot is not a 1, make it a 1 with a scaling operation.
+	\end{enumerate}
+	\newpage
+	
+	% Terminology
+	\section{Terminology}
+	\begin{description}[style=nextline]
+		\item[linear equation] a linear equation in vars $x_1, x_2,\ldots,x_n$ is an equation that can be written as
+			\begin{equation*}
+				a_1x_1 + a_2x_2 + \ldots a_nb_n = b
+			\end{equation*}
+		where $a_1, a_2,\ldots, a_n$ and $b$ are real (or complex) numbers.
+		
+		\item[system of linear equations (SoE) or linear system] one or more linear equations with the same variables.
+		
+		\item[consistent system] an SoE that has one, or infinitely many solutions
+		
+		\item[inconsistent system] an SoE that has no solution
+		
+		\item[augmented matrix] a representation of a system of equations that includes the right-hand sides of the equations.
+		
+		\item[coefficient matrix] a representation of a system of equations that does not include the right-hand sides of the equations.
+		
+		\item[leading entry] The first nonzero entry of a matrix.
+		
+		\item[basic vairable] variables in an SoE that correspond to pivot columns in the REF of a matrix.
+		
+		\item[free vairable] variables in an SoE that are not basic variables. These variables can take on any value and have the equations of the SoE hold true.
+		
+		\item[echelon form (EF)] A matrix is in echelon form if it has the following properties:
+		\begin{enumerate}
+			\item All nonzero rows are above any rows of all zeroes
+			
+			\item Each leading entry of a row is in a column to the right of the leading entry above it
+			
+			\item all entries in a column below a leading entry are zeroes
+		\end{enumerate}
+		\begin{equation*}
+			\begin{bmatrix}
+				\blacksquare & * & * & * & * & * & *\\
+				0 & 0 & 0 & \blacksquare & * & * & *\\
+				0 & 0 & 0 & 0 & 0 & \blacksquare & *\\
+				0 & 0 & 0 & 0 & 0 & 0 & 0\\
+				0 & 0 & 0 & 0 & 0 & 0 & 0\\
+			\end{bmatrix}
+		\end{equation*}
+	
+		\item[reduced echelon form (REF)] A matrix is in reduced echelon form if it is in reduced echelon form and has the following additional properties:
+		\begin{enumerate}
+			\item The leading entry of each nonzero row is 1
+			
+			\item Each leading 1 is the only nonzero entry in its column
+		\end{enumerate}
+		\begin{equation*}
+			\begin{bmatrix}
+				1 & * & * & 0 & * & 0 & *\\
+				0 & 0 & 0 & 1 & * & 0 & *\\
+				0 & 0 & 0 & 0 & 0 & 1 & *\\
+				0 & 0 & 0 & 0 & 0 & 0 & 0\\
+				0 & 0 & 0 & 0 & 0 & 0 & 0\\
+			\end{bmatrix}
+		\end{equation*}
+	
+		\item[pivot position] given a matrix in echelon or reduced form, a pivot position is a position with a leading number in a row.
+		
+		\item[pivot columns] given a matrix in echelon or reduced form, a pivot column is a column with a pivot columns.
+		
+		\item[forward phase of G-J Elimination] getting the matrix into echelon form (steps 1-4 of G-J elimination)
+		
+		\item[backward phase of G-J Elimination] getting the matrix into echelon form (step 5 of G-J elimination)
+		
+		\item[parametric description] a description of all the variables involved in a system with their associated values
+		
+		\item[linear combination] a description of a vector as a sum of vectors multiplied by scalars. The scalars the vectors are multiplied by are called \textbf{weights}.
+		
+		\item[span] the set of all possible linear combinations of a set of vectors (span\{$\vec{v_1}, \vec{v_2}, \ldots, \vec{v_p}$\} is the set of all possible linear combinations of $\{\vec{v_1}, \vec{v_2}, \ldots, \vec{v_p}\}$)
+		
+		\item[homogenous system of linear equations] an SoE that can be written as $A\vec{x} = \vec{0}$.
+		
+		\item[trivial solution] a solution to the matrix equation $A\vec{x} = \vec{0}$ where $\vec{x} = \vec{0}$.
+		
+		\item[nontrivial solution] a solution to the matrix equation $A\vec{x} = \vec{0}$ where $\vec{x} \neq \vec{0}$.
+		
+		\item[parametric vector form] a way of representing the solution set to a matrix equation where $\vec{x}$ is a sum of vectors with its free variables as weights.
+	\end{description}
+\end{document}
