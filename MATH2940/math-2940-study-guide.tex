@@ -638,7 +638,109 @@
 		\item See \autoref{thm:lin-trans-unique-mat-thm}, \autoref{thm:lin-trans-one-to-one-thm}, \autoref{thm:onto-and-one-to-one-thm}
 	\end{itemize}
 	
-	\subsection{Matrix Algebra}
+	\subsection{Key Matrices and Matrix Algebra}
+	\begin{itemize}
+		\item think of matrices as structure with vectors as columns
+		
+		\begin{flalign*}
+			A &=
+			\begin{bmatrix}
+				\vec{a_1} & \vec{a_2} & \ldots & \vec{a_n}
+			\end{bmatrix}&&\\
+			&=
+			\begin{bmatrix}
+				a_{11} & a_{11} & \ldots & a_{1n}\\
+				a_{21} & a_{22} & \ldots & a_{2n}\\
+				\vdots\\
+				a_{m1} & a_{m2} & \ldots & a_{mn}
+			\end{bmatrix}
+		\end{flalign*}
+		
+		\item \textbf{diagonal entries} are $a_{11}, a_{22}, a_{33}, \ldots$, which form \textbf{main diagonal} of $A$.
+		
+		\item \textbf{diagonal matrix} (only diagonal entries are nonzero)
+		$\begin{bmatrix}
+			3 & 0 & 0\\
+			0 & 3 & 0\\
+			0 & 0 & 3
+		\end{bmatrix}$,
+		\textbf{identity matrix} (diagonal matrix where diagonal entries are 1)
+		$\begin{bmatrix}
+			1 & 0 & 0\\
+			0 & 1 & 0\\
+			0 & 0 & 1
+		\end{bmatrix}$,
+		and \textbf{zero matrix} (all entries 0)
+		$\begin{bmatrix}
+			0 & 0 & 0\\
+			0 & 0 & 0\\
+			0 & 0 & 0
+		\end{bmatrix}$
+		are also important to know about
+		
+		\item Addition: 
+		\begin{itemize}
+			\item $A + B$ only defined if $A$ and $B$ are the same size
+			
+			\item result is sum of corresponding entries in $A$ and $B$
+		\end{itemize}
+		
+		\item Scalar Multiplication: 
+		\begin{itemize}
+			\item $rA =
+			\begin{bmatrix}
+				r\vec{a_1} & r\vec{a_2} & \ldots r\vec{a_n}
+			\end{bmatrix}$
+		\end{itemize}
+		
+		\item See \autoref{thm:mat-add-sclmult-props} for properties of the operations
+		
+		\item Matrix Multiplication:
+		\begin{itemize}
+			\item only defined if \# rows of $B$ = \# columns of $A$
+			
+			\item $AB =
+			\begin{bmatrix}
+				A\vec{b_1} & A\vec{b_2} & \ldots & A\vec{b_p}
+			\end{bmatrix}$
+			
+			\item if $A$ is $m \times n$ matrix and $B$ is $n \times p$ matrix, size of $AB$ = $m \times p$
+			
+			\item ORDER MATTERS!!!!! ($AB \neq BA$ generally, even if both multiplications are defined)
+			
+			\item if $AB = 0$ one cannot conclude that $A = 0$ or $B = 0$
+			
+			\item See \autoref{thm:mat-mult-props} for properties of matrix multiplication
+		\end{itemize}
+		
+		\item Powers of a square matrix:
+		\begin{itemize}
+			\item $A^k = A \times A \times A \times \ldots \times A$ (k times)
+			
+			\item $A^0 = I$
+		\end{itemize}
+		
+		\item Transpose:
+		\begin{itemize}
+			\item transpose of matrix is matrix where rows of original matrix become columns of the new matrix and vice versa
+			
+			\begin{example}
+				$\begin{bmatrix}
+					1 & 7 & 9\\
+					6 & 4 & 2\\
+					3 & 4 & 3
+				\end{bmatrix}^T
+				=
+				\begin{bmatrix}
+					1 & 6 & 3\\
+					7 & 4 & 4\\
+					9 & 2 & 3
+				\end{bmatrix}$
+			\end{example}
+			
+			\item See \autoref{thm:mat-transpose-props} for properties of matrix transposes
+		\end{itemize} 
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -775,6 +877,46 @@
 			\item $T$ is onto $\Leftrightarrow$ span of columns of $A = \mathbb{R}^m$.
 			
 			\item $T$ is one-to-one $\Leftrightarrow$ $\mateq{A}{\vec{x}}{\vec{0}}$ only has trivial solution, $\Leftrightarrow$ columns of $A$ are linearly independent.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:mat-add-sclmult-props}
+		
+		Given matrices $A, B, C$ of the same size, and $r, s$ are scalars:
+		\begin{enumerate}[a.]
+			\item $A + B = B + A$
+			\item $(A + B) + C = A + (B + C)$
+			\item $A + 0 = A$
+			\item $r(A + B) = rA + rB$
+			\item $(r + s)A = rA + sA$
+			\item $r(sA) = (rs)A$
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:mat-mult-props}
+		
+		Given $A, B, C$ matrices such that sums and products below are defined:
+		
+		\begin{enumerate}[a.]
+			\item $A(BC) = (AB)C$
+			\item $A(B + C) = AB + AC$
+			\item $(B + C)A = BA + CA$
+			\item $r(AB) = (rA)B = A(rB)$
+			\item $IA = A = AI$
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:mat-transpose-props}
+		
+		Given a matrix $A$:
+		\begin{enumerate}[a.]
+			\item $(A^T)^T = A$
+			\item $(A + B)^T = A^T + B^T$
+			\item $(rA)^T = rA^T$
+			\item $(AB)^T = B^TA^T$
 		\end{enumerate}
 	\end{theorem}
 	\newpage
@@ -982,5 +1124,15 @@
 			\end{bmatrix}
 		\end{equation*}
 		where $\finitevecs{\vec{e}}{n}$ are standard basis vectors.
+		
+		\item[diagonal entries] the entries on the diagonal that goes through the middle of a matrix.
+		
+		\item[main diagonal] the diagonal on which the diagonal entries lie on a matrix.
+		
+		\item[diagonal matrix] a square matrix where only its diagonal entries are nonzero.
+		
+		\item[identity matrix] a special case of a diagonal matrix where its diagonal entries are all equal to 1 (denoted as $I$ or $I_n$).
+		
+		\item[zero matrix] a matrix whose entries are all 0 (denoted as $0$ or $0_{m \times n}$).
 	\end{description}
 \end{document}
