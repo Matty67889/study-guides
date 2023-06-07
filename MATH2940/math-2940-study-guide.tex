@@ -499,53 +499,54 @@
 		
 		\item $A\vec{x}$ is a vector
 		
-		\item Ex:
-		\begin{align*}
-			\begin{bmatrix}
-				1 & 2 & -1\\
-				5 & 6 & 3
-			\end{bmatrix}
-			\begin{bmatrix}
-				2\\
-				7\\
-				3
-			\end{bmatrix}&=
-			2
-			\begin{bmatrix}
-				1\\
-				5
-			\end{bmatrix}
-			+ 7
-			\begin{bmatrix}
-				2\\
-				6
-			\end{bmatrix}
-			+ 3
-			\begin{bmatrix}
-				-1\\
-				3
-			\end{bmatrix}\\
-			&=
-			\begin{bmatrix}
-				2\\
-				10
-			\end{bmatrix}
-			+
-			\begin{bmatrix}
-				14\\
-				42
-			\end{bmatrix}
-			+
-			\begin{bmatrix}
-				-3\\
-				9
-			\end{bmatrix}\\
-			&=
-			\begin{bmatrix}
-				13\\
-				61
-			\end{bmatrix}
-		\end{align*}
+		\begin{example}
+			\begin{align*}
+				\begin{bmatrix}
+					1 & 2 & -1\\
+					5 & 6 & 3
+				\end{bmatrix}
+				\begin{bmatrix}
+					2\\
+					7\\
+					3
+				\end{bmatrix}&=
+				2
+				\begin{bmatrix}
+					1\\
+					5
+				\end{bmatrix}
+				+ 7
+				\begin{bmatrix}
+					2\\
+					6
+				\end{bmatrix}
+				+ 3
+				\begin{bmatrix}
+					-1\\
+					3
+				\end{bmatrix}\\
+				&=
+				\begin{bmatrix}
+					2\\
+					10
+				\end{bmatrix}
+				+
+				\begin{bmatrix}
+					14\\
+					42
+				\end{bmatrix}
+				+
+				\begin{bmatrix}
+					-3\\
+					9
+				\end{bmatrix}\\
+				&=
+				\begin{bmatrix}
+					13\\
+					61
+				\end{bmatrix}
+			\end{align*}
+		\end{example}
 		
 		\item See \autoref{thm:A-x-b-thm} and \autoref{thm:A-x-b-relation-thm}
 		
@@ -601,6 +602,43 @@
 		
 		\item see \nameref{sec:lin-indep-check}, \autoref{thm:lin-dep-thm}, \autoref{thm:lin-dep-thm-p-gt-n}, and \autoref{thm:lin-dep-thm-zero-vec}
 	\end{itemize}
+	
+	\subsection{Transformations}
+	\begin{itemize}
+		\item a transformation $T$ is a function that maps a vector $\vec{x}$ to a vector $A\vec{x}$
+		
+		\item $T(\vec{x}) = A\vec{x}$ for a matrix $A$. Notation: $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+		
+		\item $T$ has a \textbf{domain} and \textbf{co-domain}. For a $\vec{x}$, the \textbf{image} of $\vec{x}$ is $T(\vec{x}) = A\vec{x}$, and the \textbf{range} is all possible images under $T$.
+		
+		\begin{figure}[h!]
+			\includegraphics[width=0.5\paperwidth, center]{images/lin-transforms-diagram.PNG}
+		\end{figure}
+		
+		\item $\vec{x} \mapsto A\vec{x}$ means $\vec{x}$ maps to $A\vec{x}$
+		
+		\item Properties of linear transformations:
+		\begin{enumerate}
+			\item $T(\vec{u} + \vec{v}) = T(\vec{u}) + T(\vec{v})$
+			
+			\item $T(c\vec{u}) = cT(\vec{u})$
+		\end{enumerate}
+		
+		\item these properties lead to the following facts:
+		\begin{enumerate}
+			\item $T(\vec{0}) = \vec{0}$ (though the $\vec{0}$ vectors can be in different spaces)
+			
+			\item $T(c\vec{u} + d\vec{v}) = cT(\vec{u}) + dT(\vec{v})$.
+			
+			\item $T(\lincombo{c}{\vec{v}}{p}{p}) = \finiteadd{c_1T(\vec{v_1})}{c_2T(\vec{v_2})}{c_pT(\vec{v_p})}$
+		\end{enumerate}
+		
+		\item linear transformations can also be \textbf{onto} (all points in co-domain have at least one arrow pointing in) and/or \textbf{one-to-one} (no points in co-domain with more than 1 arrow pointing in)
+		
+		\item See \autoref{thm:lin-trans-unique-mat-thm}, \autoref{thm:lin-trans-one-to-one-thm}, \autoref{thm:onto-and-one-to-one-thm}
+	\end{itemize}
+	
+	\subsection{Matrix Algebra}
 	\newpage
 	
 	\section{Important Theorems}
@@ -675,6 +713,69 @@
 		\label{thm:lin-dep-thm-zero-vec}
 		
 		A set of vectors $\finitevecsset{\vec{v}}{p}$ is linearly dependent if it contains the zero vector.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-trans-unique-mat-thm}
+		Given a linear transformation $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$ there exists a unique matrix A such that
+		\begin{equation*}
+			T(\vec{x}) = A\vec{x}
+		\end{equation*}
+		namely
+		\begin{equation*}
+			A =
+			\begin{bmatrix}
+				T(\vec{e_1}) & T(\vec{e_2}) & \ldots & T(\vec{e_n})
+			\end{bmatrix}
+		\end{equation*}
+		where
+		\begin{equation*}
+			\vec{e_1} =
+			\begin{bmatrix}
+				1\\
+				0\\
+				0\\
+				\vdots\\
+				0
+			\end{bmatrix}
+			\vec{e_2} =
+			\begin{bmatrix}
+				0\\
+				1\\
+				0\\
+				\vdots\\
+				0
+			\end{bmatrix}
+			\vec{e_j} =
+			\begin{bmatrix}
+				0\\
+				\vdots\\
+				0\\
+				1 \leftarrow j^{th} entry\\
+				\vdots\\
+				0\\
+				\vdots\\
+				0
+			\end{bmatrix}
+		\end{equation*}
+		$\finitevecs{\vec{e}}{j}$ are known as \textbf{standard basis vectors}. The matrix A is the \textbf{standard matrix for the linear transformation T}.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-trans-one-to-one-thm}
+		
+		Given a linear transformation $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$, T is one-to-one exactly when $\mateq{T}{(\vec{x})}{\vec{0}}$ has only the trivial solution.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:onto-and-one-to-one-thm}
+		
+		Given a linear transformation $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$ with standard matrix A:
+		\begin{enumerate}[a.]
+			\item $T$ is onto $\Leftrightarrow$ span of columns of $A = \mathbb{R}^m$.
+			
+			\item $T$ is one-to-one $\Leftrightarrow$ $\mateq{A}{\vec{x}}{\vec{0}}$ only has trivial solution, $\Leftrightarrow$ columns of $A$ are linearly independent.
+		\end{enumerate}
 	\end{theorem}
 	\newpage
 	
@@ -758,7 +859,6 @@
 		
 		\item Solve for $\mateq{A}{\vec{x}}{\vec{0}}$. If there is only the trivial solution, the $S$ is linearly independent. Otherwise, it is linearly dependent.
 	\end{enumerate}
-	
 	\newpage
 	
 	% Terminology
@@ -857,5 +957,30 @@
 			\lincombo{c}{\vec{v}}{p}{p} = \vec{0}
 		\end{equation*}
 		where $\finitevecsset{c}{p}$ are not all zero.
+		
+		\item[matrix transformation]  a function that maps a vector $\vec{x}$ to a vector $A\vec{x}$.
+		
+		\item[domain of matrix trnasformation] the set of objects being mapped. If a matrix A has $m$ rows and $n$ columns, the domain is $\mathbb{R}^n$.
+		
+		\item[co-domain of matrix trnasformation] the set of objects being mapped to. If a matrix A has $m$ rows and $n$ columns, the domain is $\mathbb{R}^m$.
+		
+		\item[image of matrix transformation] for a particular $\vec{x} \in \mathbb{R}^n$, $T(\vec{x}) = A\vec{x}$ is the image of $\vec{x}$ under $T$.
+		
+		\item[range of a matrix transformation] the set of all images under $T$.
+		
+		\item[onto] a transformation is onto when its range is its co-domain. In other words, for every $\vec{b}$ in the co-domain, there exists at least one $\vec{x}$ in the domain such that $\mateq{T}{(\vec{x})}{\vec{b}}$.
+		
+		\item[one-to-one] a transformation is one-to-one when each $\vec{b}$ in the co-domain is mapped to at most 1 $\vec{x}$ in the domain.
+		
+		\item[standard basis vectors] the set of vectors $\finitevecsset{\vec{e}}{j}$, where the vectors have 0s in all other positions besides their $j^{th}$ position, which is a 1.
+		
+		\item[standard matrix for a linear transformation] the matrix
+		\begin{equation*}
+			A =
+			\begin{bmatrix}
+				T(\vec{e_1}) & T(\vec{e_2}) & \ldots & T(\vec{e_n})
+			\end{bmatrix}
+		\end{equation*}
+		where $\finitevecs{\vec{e}}{n}$ are standard basis vectors.
 	\end{description}
 \end{document}
