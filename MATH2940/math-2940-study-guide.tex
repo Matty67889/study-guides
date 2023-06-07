@@ -29,14 +29,13 @@
 \theoremstyle{definition}
 \newtheorem{example}{Example}[subsection]
 
-
 % Style commands
 % for better centered circles (credit to https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers)
 \newcommand{\circlemath}[1]{\raisebox{0.5pt}{\textcircled{\raisebox{-.9pt} #1}}}
 
 % Helpful commands for linear algebra (delete if not using)
 % elementary row operations (depends on amsmath package)
-% used for a visual representatation of elementary row operations with arrows and row numbers.
+% used for a visual representatation of elementary row operations with arrows and row numbers. only works in math environments
 
 % replace command:
 % first argument is the row that will be replaced
@@ -65,6 +64,35 @@
 % scaling command with right arrow below
 % arguments are the same as regular scalerow command
 \newcommand{\scalerowrightarr}[2]{\xrightarrow{\scalerow{#1}{#2}}}
+
+% command for writing the matrix equation Ax = b. only works in math environments.
+% arg 1: letter of variable used to represent the matrix.
+% arg 2: letter of variable used to represent the vector being multiplied by the matrix.
+% arg 3: letter of the variable used to represent the right-hand side of the matrix equation.
+\newcommand{\mateq}[3]{#1#2 = #3}
+
+% command for writing finite set of vectors. only works in math environments
+% arg 1: letter of the variable that used to represent the vectors
+% arg 2: letter of variable used to represent the last underscored vector in the list
+\newcommand{\finitevecs}[2]{#1_1,\ldots,#1_#2}
+
+% command for writing finite set of vectors surrounded by curly braces. only works in math environments
+% arg 1: letter of the variable that used to represent the vectors
+% arg 2: letter of variable used to represent the last underscored vector in the list
+\newcommand{\finitevecsset}[2]{\{\finitevecs{#1}{#2}\}}
+
+% command for writing finite set of values being added up. displays the first two two being added up, and then uses ellipses followed only the final addition at the end. only works in math environments
+% arg 1: first term to be added
+% arg 2: second term to be added
+% arg 3: last term to be added
+\newcommand{\finiteadd}[3]{#1 + #2 + \ldots + #3}
+
+% command for writing linear combinations. displays the first two vector-weight additions, then ellipses, followed only the final weight-vector addition. only works in math environments
+% arg 1: letter of the variable that used to represent the weights
+% arg 2: letter of the variable that used to represent the vectors
+% arg 3: letter of variable used to represent the last underscored weight in the list
+% arg 4: letter of variable used to represent the last underscored vector in the list
+\newcommand{\lincombo}[4]{\finiteadd{#1_1#2_1}{#1_2#2_2}{#1_#3#2_#4}}
 
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
@@ -536,14 +564,14 @@
 		
 		\item can write solution set of matrix equation as a vector using parametric description of solution set, known as \textbf{parametric vector form}
 		
-		\item to write in parametric vector form, first write out $\vec{x}$ as a vector, then "extract" free variables (look at math notes for continutation)
+		\item to write in parametric vector form, see \nameref{sec:parametric-vector-form}
 		
 		\begin{example}
 			The vector form of the parametric description
 			\begin{align*}
 				x_1 &= (4/3)x_3\\
 				x_2 &= 0\\
-				x_3 &\:is \:free
+				x_3 & \:is \:free
 			\end{align*}
 			is
 			\begin{equation*}
@@ -561,6 +589,17 @@
 				\end{bmatrix}
 			\end{equation*}
 		\end{example}
+		
+		\item Non-homogenous SoEs have same parametric vector form solution as $A\vec{x} = \vec{0}$, but with extra vector added that comes from $\vec{b}$ (see \autoref{thm:non-homo-thm})
+	\end{itemize}
+	
+	\subsection{Linear Dependence}
+	\begin{itemize}
+		\item see definitions for \textbf{linear independence and linear dependence}
+		
+		\item columns of a matrix $A$ are linearly indep. $\Leftrightarrow \mateq{A}{\vec{x}}{\vec{0}}$ has only trivial solution
+		
+		\item see \nameref{sec:lin-indep-check}, \autoref{thm:lin-dep-thm}, \autoref{thm:lin-dep-thm-p-gt-n}, and \autoref{thm:lin-dep-thm-zero-vec}
 	\end{itemize}
 	\newpage
 	
@@ -573,7 +612,7 @@
 		\label{thm:A-x-b-thm}
 		When A is $m \times n$ matrix with columns $a_1,\ldots,a_n$, and $\vec{b}$ in $\mathbb{R}^m$,
 		\begin{equation*}
-			A\vec{x} = \vec{b}
+			\mateq{A}{\vec{x}}{\vec{b}}
 		\end{equation*}
 		has same solution set as
 		\begin{equation*}
@@ -611,6 +650,31 @@
 			
 			\item $A(c\vec{u}) = c(A\vec{u})$
 		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:non-homo-thm}
+		Suppose the equation $A\vec{x} = \vec{b}$ is consistent for some given $\vec{b}$, and let $\vec{p}$ be a
+		solution. Then the solution set of $A\vec{x} = \vec{b}$ is the set of all vectors of the form
+		$\vec{w} = \vec{p} + \vec{v_h}$, where $\vec{v_h}$ is any solution of the homogeneous equation $A\vec{x} = \vec{0}$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-dep-thm}
+		
+		A set of vectors $\finitevecsset{\vec{v}}{p}$ is linearly dependent if one of the vectors is a linear combination of the others. ($v_j \in span{v_1, v_2,\ldots,v_{j-1}, v_{j+1},\ldots,v_p}$) for some $j$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-dep-thm-p-gt-n}
+		
+		A set of vectors $\finitevecsset{\vec{v}}{p}$ is linearly dependent if there are more vectors than entries in each vector. Any set $\finitevecsset{\vec{v}}{p}$ in $\mathbb{R}^n$ is linearly dependent if $p > n$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-dep-thm-zero-vec}
+		
+		A set of vectors $\finitevecsset{\vec{v}}{p}$ is linearly dependent if it contains the zero vector.
 	\end{theorem}
 	\newpage
 	
@@ -656,6 +720,45 @@
 		
 		\item Create zeroes above each pivot, starting with the rightmost pivot. If a pivot is not a 1, make it a 1 with a scaling operation.
 	\end{enumerate}
+	
+	\subsection{Parametric Vector Form}
+	\label{sec:parametric-vector-form}
+	\begin{enumerate}
+		\item Find the parametric description of the solution set for the SoE. Write all the basic variables in terms of the free variables.
+		
+		\item Write the parametric description as a vector
+		$\vec{x} =
+		\begin{bmatrix}
+			x_1\\
+			x_2\\
+			\vdots\\
+			x_n
+		\end{bmatrix}$,
+		substituting each variable for its actual value.
+		
+		\item Write each free variable as the product of itself and a vector $\vec{v_n} =
+		\begin{bmatrix}
+			v_1\\
+			v_2\\
+			\vdots\\
+			v_n
+		\end{bmatrix}$,
+		where each entry of $\vec{v_n}$ is the corresponding coefficient of the variable in the vector $\vec{x}$.
+		
+		\item Write all the free variables and the vectors they are multiplied by as a sum expression.
+	\end{enumerate}
+	
+	\subsection{Checking Linear Independence}
+	\label{sec:lin-indep-check}
+	
+	Given a set of vectors $\finitevecsset{\vec{v}}{p}$:
+	
+	\begin{enumerate}
+		\item Put the vectors into a matrix $A$
+		
+		\item Solve for $\mateq{A}{\vec{x}}{\vec{0}}$. If there is only the trivial solution, the $S$ is linearly independent. Otherwise, it is linearly dependent.
+	\end{enumerate}
+	
 	\newpage
 	
 	% Terminology
@@ -738,5 +841,21 @@
 		\item[nontrivial solution] a solution to the matrix equation $A\vec{x} = \vec{0}$ where $\vec{x} \neq \vec{0}$.
 		
 		\item[parametric vector form] a way of representing the solution set to a matrix equation where $\vec{x}$ is a sum of vectors with its free variables as weights.
+		
+		\item[linear independence and dependence] Given a set of vectors $\finitevecsset{\vec{v}}{p}$, they are \textbf{linearly independent} if
+		\begin{equation*}
+			\lincombo{x}{\vec{v}}{p}{p} = \vec{0}
+		\end{equation*}
+		has only the trivial solution. If there is a nontrivial solution to the equation, for example, a
+		\begin{equation*}
+			\lincombo{c}{\vec{v}}{p}{p} = \vec{0}
+		\end{equation*}
+		where $\finitevecsset{c}{p}$ are not all zero, the set is \textbf{linearly dependent}.
+		
+		\item[linear dependence relation] Given a set of vectors $\finitevecsset{\vec{v}}{p}$, a \textbf{dependence relation} among $\finitevecsset{\vec{v}}{p}$ is
+		\begin{equation*}
+			\lincombo{c}{\vec{v}}{p}{p} = \vec{0}
+		\end{equation*}
+		where $\finitevecsset{c}{p}$ are not all zero.
 	\end{description}
 \end{document}
