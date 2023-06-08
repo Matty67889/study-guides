@@ -24,6 +24,9 @@
 % Theorem environment setup
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
+% IMT environment setup (see amsmath documentation, section 2 (https://www.ams.org/arc/tex/amscls/amsthdoc.pdf) for why this was made a separate environment)
+%\theoremstyle{definition}
+%\newtheorem*{IMT}{Invertible Matrix Theorem}
 
 % Example environment setup
 \theoremstyle{definition}
@@ -741,6 +744,40 @@
 			\item See \autoref{thm:mat-transpose-props} for properties of matrix transposes
 		\end{itemize} 
 	\end{itemize}
+	
+	\subsection{Invertible Matrices}
+	\begin{itemize}
+		\item invertibility only applies to square matrices, so matrices in this section are all square ($n \times n$)
+		
+		\item a matrix is invertible if there exists a matrix $C$ such that $AC = I$ and $CA = I$. $C$ is the inverse of $A$ (denoted as $A^{-1}$) in this case.
+		
+		\item non-invertible matrices are sometimes called \textbf{singular matrices}, and invertible matrices are sometimes called \textbf{nonsingular matrices}.
+		
+		\item the matrix 
+		$\begin{bmatrix}
+			0
+		\end{bmatrix}$
+		is not invertible
+		
+		\item see \autoref{thm:two-by-two-mat-invert-thm} and \autoref{thm:invert-mat-unique-soln-thm} and \autoref{thm:invert-mat-algebra}
+		
+		\item To find inverse of matrix: see \nameref{sec:mat-inverse}
+		
+		\item IMPORTANT THEOREM: \autoref{thm:imt-thm}
+		
+		\item a transformation $T$ is invertible if there exists if there exists a transformation $S$ such that
+		\begin{enumerate}[i.]
+			\item $S(T(\vec{x})) = \vec{x}$ for all $\vec{x}$ in the domain of $T$
+			\item $T(S(\vec{b})) = \vec{b}$ for all $\vec{b}$ in the domain of $S$
+		\end{enumerate}
+		
+		\item see \autoref{thm:invertible-trans-thm}
+	\end{itemize}
+	
+	\subsection{LU Factorization}
+	\begin{itemize}
+		\item placeholder text
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -919,6 +956,67 @@
 			\item $(AB)^T = B^TA^T$
 		\end{enumerate}
 	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:two-by-two-mat-invert-thm}
+		Given $A
+		=
+		\begin{bmatrix}
+			a & b\\
+			c & d
+		\end{bmatrix}$,
+		if $ad - bc \neq 0$ then $A$ is invertible and $A^{-1} = \frac{1}{ad-bc}
+		\begin{bmatrix}
+			d & -b\\
+			-c & a
+		\end{bmatrix}$
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:invert-mat-unique-soln-thm}
+		
+		If $A$ is invertible $n \times n$ matrix, then for every $\vec{b}$ in $\mathbb{R}^n$, $\mateq{A}{\vec{x}}{\vec{b}}$ has the unique solution $\vec{x} = A^{-1}\vec{b}$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:invert-mat-algebra}
+		
+		Given $A, B$ invertible matrices, then
+		\begin{enumerate}[a.]
+			\item $A^{-1}$ is also invertible and $(A^{-1})^{-1} = A$
+			
+			\item $AB$ is also invertible and $(AB)^{-1} = B^{-1}A^{-1}$
+			
+			\item $A^T$ is also invertible and $(A^T)^{-1} = (A^{-1})^T$
+		\end{enumerate}
+	\end{theorem}
+	
+%	TODO: decide if unique theorem names should have their own environment or not
+	\begin{theorem}[\textbf{Invertible Matrix Theorem}]
+		\label{thm:imt-thm}
+		If $A$ is an $n \times n$ matrix, then the following statements are equivalent. That
+		is, for a given $A$, the statements are either all true or all false.
+		
+		\begin{enumerate}[a.]
+			\item $A$ is an invertible matrix
+			\item $\mateq{A}{\vec{x}}{\vec{b}}$ has unique solution for every $\vec{b} \in \mathbb{R}^n$.
+			\item $A$ has $n$ pivot positions, and a pivot position in every row and column. (because $A$ is square)
+			\item $A$ has reduced echelon form $I$
+			\item $\mateq{A}{\vec{x}}{\vec{0}}$ only has trivial solution
+			\item the columns of $A$ are linearly independent
+			\item columns of $A$ span $\mathbb{R}^n$
+			\item $A^T$ is invertible
+			\item the transformation $\vec{x} \mapsto A\vec{x}$ is onto
+			\item the transformation $\vec{x} \mapsto A\vec{x}$ is one-to-one
+			\item there exists an $n \times n$ matrix $C$ such that $\mateq{C}{A}{I}$
+			\item there exists an $n \times n$ matrix $D$ such that $\mateq{A}{D}{I}$
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:invertible-trans-thm}
+		A linear transformation $T: \mathbb{R}^n \rightarrow \mathbb{R}^n$ with standard matrix $A$ is invertible $\Leftrightarrow A$ is an invertible matrix. In that case, $\vec{b} \mapsto A^{-1}\vec{b}$ is the inverse function of $T$.
+	\end{theorem}
 	\newpage
 	
 	% Toolbox
@@ -1001,6 +1099,35 @@
 		
 		\item Solve for $\mateq{A}{\vec{x}}{\vec{0}}$. If there is only the trivial solution, the $S$ is linearly independent. Otherwise, it is linearly dependent.
 	\end{enumerate}
+	
+	\subsection{Finding the Inverse of an Invertible Matrix}
+	\label{sec:mat-inverse}
+	To find the inverse of a matrix $A$:
+	\begin{enumerate}
+		\item create the matrix
+		$
+		M =
+		\begin{bmatrix}
+			A \:|\: I
+		\end{bmatrix}$.
+		
+		\item perform Gauss-Jordan Elimination on $M$. If the matrix is invertible, the reduced echelon form of $M$ will be
+		$
+		\begin{bmatrix}
+			I \:|\: A^{-1}
+		\end{bmatrix}$.
+	\end{enumerate}
+	
+	In other words,
+	\begin{equation*}
+		\begin{bmatrix}
+			A \:|\: I
+		\end{bmatrix}
+		\xrightarrow{G.J}
+		\begin{bmatrix}
+			I \:|\: A^{-1}
+		\end{bmatrix}
+	\end{equation*}
 	\newpage
 	
 	% Terminology
@@ -1134,5 +1261,7 @@
 		\item[identity matrix] a special case of a diagonal matrix where its diagonal entries are all equal to 1 (denoted as $I$ or $I_n$).
 		
 		\item[zero matrix] a matrix whose entries are all 0 (denoted as $0$ or $0_{m \times n}$).
+		
+		\item[invertible/nonsingular matrix] a matrix is invertible when exists a matrix $C$ such that $AC = I$ and $CA = I$. A non-invertible matrix is called a singular matrix. The inverse of tha matrix is denoted as $A^{-1}$, if the original matrix is $A$.
 	\end{description}
 \end{document}
