@@ -73,6 +73,10 @@
 % arg 2: letter of variable used to represent the vector being multiplied by the matrix.
 % arg 3: letter of the variable used to represent the right-hand side of the matrix equation.
 \newcommand{\mateq}[3]{#1#2 = #3}
+% command that is the same thing as \mateq, but with arg1 = A, arg2 = \vec{x}, arg3 = \vec{b}
+\newcommand{\mateqaxb}{\mateq{A}{\vec{x}}{\vec{b}}}
+% command that is the same thing as \mateq, but with arg1 = A, arg2 = \vec{x}, arg3 = 0
+\newcommand{\mateqaxo}{\mateq{A}{\vec{x}}{\vec{0}}}
 
 % command for writing finite set of vectors. only works in math environments
 % arg 1: letter of the variable that used to represent the vectors
@@ -601,7 +605,7 @@
 	\begin{itemize}
 		\item see definitions for \textbf{linear independence and linear dependence}
 		
-		\item columns of a matrix $A$ are linearly indep. $\Leftrightarrow \mateq{A}{\vec{x}}{\vec{0}}$ has only trivial solution
+		\item columns of a matrix $A$ are linearly indep. $\Leftrightarrow \mateqaxo$ has only trivial solution
 		
 		\item see \nameref{sec:lin-indep-check}, \autoref{thm:lin-dep-thm}, \autoref{thm:lin-dep-thm-p-gt-n}, and \autoref{thm:lin-dep-thm-zero-vec}
 	\end{itemize}
@@ -776,7 +780,34 @@
 	
 	\subsection{LU Factorization}
 	\begin{itemize}
-		\item placeholder text
+		\item factorization that makes it easier to solve for $\mateqaxb$ faster
+		
+		\item $L and U$ have a special structure:
+		\begin{enumerate}[a.]
+			\item $L$ is "lower triangular" with 1s on diagonal
+			
+			\item $U$ is the echelon form of $A$ (so "upper triangular", 0s below diagonal)
+			
+			\begin{equation}
+				A =
+				\underset{L}
+				{\begin{bmatrix}
+						1 & 0 & 0 & 0\\
+						* & 1 & 0 & 0\\
+						* & * & 1 & 0\\
+						* & * & * & 1
+				\end{bmatrix}}
+				\underset{U}
+				{\begin{bmatrix}
+						\blacksquare & * & * & * & *\\
+						0 & \blacksquare & * & * & *\\
+						0 & 0 & 0 & \blacksquare & *\\
+						0 & 0 & 0 & 0 & 0
+				\end{bmatrix}}
+			\end{equation}
+		\end{enumerate}
+		
+		\item Method: see \nameref{sec:lu-factorization} and \nameref{sec:axb-solve-lu-factor}
 	\end{itemize}
 	\newpage
 	
@@ -789,7 +820,7 @@
 		\label{thm:A-x-b-thm}
 		When A is $m \times n$ matrix with columns $a_1,\ldots,a_n$, and $\vec{b}$ in $\mathbb{R}^m$,
 		\begin{equation*}
-			\mateq{A}{\vec{x}}{\vec{b}}
+			\mateqaxb
 		\end{equation*}
 		has same solution set as
 		\begin{equation*}
@@ -913,7 +944,7 @@
 		\begin{enumerate}[a.]
 			\item $T$ is onto $\Leftrightarrow$ span of columns of $A = \mathbb{R}^m$.
 			
-			\item $T$ is one-to-one $\Leftrightarrow$ $\mateq{A}{\vec{x}}{\vec{0}}$ only has trivial solution, $\Leftrightarrow$ columns of $A$ are linearly independent.
+			\item $T$ is one-to-one $\Leftrightarrow \mateqaxo$ only has trivial solution, $\Leftrightarrow$ columns of $A$ are linearly independent.
 		\end{enumerate}
 	\end{theorem}
 	
@@ -975,7 +1006,7 @@
 	\begin{theorem}
 		\label{thm:invert-mat-unique-soln-thm}
 		
-		If $A$ is invertible $n \times n$ matrix, then for every $\vec{b}$ in $\mathbb{R}^n$, $\mateq{A}{\vec{x}}{\vec{b}}$ has the unique solution $\vec{x} = A^{-1}\vec{b}$.
+		If $A$ is invertible $n \times n$ matrix, then for every $\vec{b}$ in $\mathbb{R}^n$, $\mateqaxb$ has the unique solution $\vec{x} = A^{-1}\vec{b}$.
 	\end{theorem}
 	
 	\begin{theorem}
@@ -999,10 +1030,10 @@
 		
 		\begin{enumerate}[a.]
 			\item $A$ is an invertible matrix
-			\item $\mateq{A}{\vec{x}}{\vec{b}}$ has unique solution for every $\vec{b} \in \mathbb{R}^n$.
+			\item $\mateqaxb$ has unique solution for every $\vec{b} \in \mathbb{R}^n$.
 			\item $A$ has $n$ pivot positions, and a pivot position in every row and column. (because $A$ is square)
 			\item $A$ has reduced echelon form $I$
-			\item $\mateq{A}{\vec{x}}{\vec{0}}$ only has trivial solution
+			\item $\mateqaxo$ only has trivial solution
 			\item the columns of $A$ are linearly independent
 			\item columns of $A$ span $\mathbb{R}^n$
 			\item $A^T$ is invertible
@@ -1097,7 +1128,7 @@
 	\begin{enumerate}
 		\item Put the vectors into a matrix $A$
 		
-		\item Solve for $\mateq{A}{\vec{x}}{\vec{0}}$. If there is only the trivial solution, the $S$ is linearly independent. Otherwise, it is linearly dependent.
+		\item Solve for $\mateqaxo$. If there is only the trivial solution, the $S$ is linearly independent. Otherwise, it is linearly dependent.
 	\end{enumerate}
 	
 	\subsection{Finding the Inverse of an Invertible Matrix}
@@ -1128,10 +1159,102 @@
 			I \:|\: A^{-1}
 		\end{bmatrix}
 	\end{equation*}
+	
+	\subsection{LU Factorization Algorithm}
+	\label{sec:lu-factorization}
+	\begin{enumerate}
+		\item Reduce $A$ to echelon form. As you are row reducing, when you get 0s underneath a column, place entries in the next column of $L$ such that the same sequence of row operations will reduce $L$ to the corresponding column of $I$. $L$ will have as many columns as pivots of $A$. Note: Generally, the entries of $L$ are the corresponding entries of $A$ divided by the top entry of that column, with 1s along the main diagonal (see \autoref{ex:lu-factor-ex} below).
+		
+		\item $U$ is the echelon form of $A$.
+	\end{enumerate}
+	
+	\begin{example}
+		\label{ex:lu-factor-ex}
+		\begin{equation*}
+			\begin{bmatrix}
+				2 & 3 & 4\\
+				4 & 8 & 11\\
+				4 & 10 & 16
+			\end{bmatrix}
+			\underset{\replacerightarr{2}{1}{-2}}{\replace{3}{1}{-2}}
+			\begin{bmatrix}
+				2 & 3 & 4\\
+				0 & 2 & 3\\
+				0 & 4 & 8
+			\end{bmatrix}
+		\end{equation*}
+		We have created 0s under the first column. Now, we can create the first column of $L$. We ask ourselves, what column could be turned into $\begin{bmatrix}
+			1\\
+			0\\
+			0
+		\end{bmatrix}$
+		with the row operations
+		$\underset{\replace{2}{1}{-2}}{\replace{3}{1}{-2}}$? The answer is $\begin{bmatrix}
+			1\\
+			2\\
+			2
+		\end{bmatrix}$,
+		so this is our first column of $L$. We repeat this process for the other pivots of $A$:
+		\begin{equation*}
+			\begin{bmatrix}
+				2 & 3 & 4\\
+				0 & 2 & 3\\
+				0 & 4 & 8
+			\end{bmatrix}
+			\replacerightarr{3}{2}{-2}
+			\begin{bmatrix}
+				2 & 3 & 4\\
+				0 & 2 & 3\\
+				0 & 0 & 2
+			\end{bmatrix}
+		\end{equation*}
+		
+		We have created 0s under the second column. Now, we can create the second column of $L$. We ask ourselves, what column could be turned into $\begin{bmatrix}
+			0\\
+			1\\
+			0
+		\end{bmatrix}$
+		with the row operations
+		$\replace{3}{2}{-2}$? The answer is $\begin{bmatrix}
+			0\\
+			1\\
+			2
+		\end{bmatrix}$, and this is our second column of $L$. For the last column, it is
+		$\begin{bmatrix}
+			0\\
+			0\\
+			1
+		\end{bmatrix}$, because $L$ is lower triangular. Therefore, $L = \begin{bmatrix}
+		1 & 0 & 0\\
+		2 & 1 & 0\\
+		2 & 2 & 1
+		\end{bmatrix}$.
+		
+		You will notice from this example that \textbf{the entries of $L$ are the corresponding entries of $A$ divided by the top entry of that column, with 1s along the main diagonal}. This is generally the case, but you should always go through this whole algorithm to ensure you don't make mistakes.
+	\end{example}
+	
+	\subsection{Using LU to solve $\mateqaxb$}
+	\label{sec:axb-solve-lu-factor}
+	$\mateqaxb$ can be written as $\mateq{L}{(U\vec{x})}{\vec{b}}$ with LU factorization. Therefore, to solve $\mateqaxb$:
+	\begin{enumerate}		
+		\item Solve $\mateq{L}{\vec{y}}{\vec{b}}$ for $\vec{y}$.
+		
+		\item Solve $\mateq{U}{\vec{x}}{\vec{y}}$ for $\vec{x}$.
+	\end{enumerate}
 	\newpage
 	
 	% Terminology
 	\section{Terminology}
+	\subsection{Symbols}
+	\begin{description}[style=nextline]
+		\item[$\sim$] a symbol used to represent row equivalence between two matrices.
+		
+		\item[$\blacksquare$] a symbol used to represent a nonzero number
+		
+		\item[*] a symbol used to represent any number
+	\end{description}
+	
+	\subsection{Definitions}
 	\begin{description}[style=nextline]
 		\item[linear equation] a linear equation in vars $x_1, x_2,\ldots,x_n$ is an equation that can be written as
 			\begin{equation*}
@@ -1263,5 +1386,47 @@
 		\item[zero matrix] a matrix whose entries are all 0 (denoted as $0$ or $0_{m \times n}$).
 		
 		\item[invertible/nonsingular matrix] a matrix is invertible when exists a matrix $C$ such that $AC = I$ and $CA = I$. A non-invertible matrix is called a singular matrix. The inverse of tha matrix is denoted as $A^{-1}$, if the original matrix is $A$.
+		
+		\item[lower triangular matrix] a matrix that only has nonzero numbers below its diagonal.
+		\begin{equation*}
+			\begin{bmatrix}
+				\blacksquare & 0 & 0 & 0\\
+				* & \blacksquare & 0 & 0\\
+				* & * & \blacksquare & 0\\
+				* & * & * & \blacksquare\\
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item[unit lower triangular matrix] a special case of the lower triangular matrix that has 1s on its diagonal.
+		\begin{equation*}
+			\begin{bmatrix}
+				1 & 0 & 0 & 0\\
+				* & 1 & 0 & 0\\
+				* & * & 1 & 0\\
+				* & * & * & 1\\
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item[upper triangular matrix] a matrix that has only has nonzero numbers above its diagonal.
+		\begin{equation*}
+			\begin{bmatrix}
+				\blacksquare & * & * & * & *\\
+				0 & \blacksquare & * & * & *\\
+				0 & 0 & 0 & \blacksquare & *\\
+				0 & 0 & 0 & 0 & \blacksquare\\
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item[unit upper triangular matrix] special case of the upper triangular matrix that has 1s on its diagonal.
+		\begin{equation*}
+			\begin{bmatrix}
+				1 & * & * & * & *\\
+				0 & 1 & * & * & *\\
+				0 & 0 & 0 & 1 & *\\
+				0 & 0 & 0 & 0 & 1\\
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item[triangular matrix] a matrix that is either lower or upper triangular.
 	\end{description}
 \end{document}
