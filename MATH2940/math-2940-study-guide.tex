@@ -130,12 +130,7 @@
 	\newpage
 	
 	% Notes
-	\section{Syntax}
-	\begin{itemize}
-		\item \textbf{linear equations} are basically a diagonal line on a graph
-		\item a \textbf{system of linear equations (SoE)} is a group of linear equations with the same variables
-	\end{itemize}
-
+	\section{Overview}
 	\subsection{Solving Linear Equations}
 	\begin{itemize}
 		\item SoEs can have one of three solutions:
@@ -809,6 +804,46 @@
 		
 		\item Method: see \nameref{sec:lu-factorization} and \nameref{sec:axb-solve-lu-factor}
 	\end{itemize}
+	
+	\subsection{Vector Spaces and Subspaces}
+	\begin{itemize}
+		\item a \textbf{vector space} is nonempty set, $V$, of objects (called vectors). Two operations can be performed on these vectors: addition, scalar multiplication
+		
+		\item 10 Vector axioms for vector space $V$, vectors $\vec{u}, \vec{v}, \vec{w}$, scalars $c and d$:
+		
+		\begin{enumerate}
+			\item $\vec{u} + \vec{v} \in V$
+			\item $\vec{u} + \vec{v} = \vec{v} + \vec{u}$
+			\item $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w)}$
+			\item there is $\vec{0} \in V$ such that $\vec{u} + \vec{0} = \vec{u}$ for all $\vec{u} \in V$
+			\item there is $\vec{-u} \in V$ such that $\vec{u} + (\vec{-u}) = \vec{0}$
+			\item $c\vec{u} \in V$
+			\item $c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v}$
+			\item $(c + d)\vec{u} = c\vec{u} + d\vec{u}$
+			\item $c(d\vec{u}) = (cd)\vec{u}$
+			\item $1\vec{u} = \vec{u}$
+		\end{enumerate}
+		
+		\item from the axioms, we have
+		\begin{enumerate}
+			\item $0\vec{u} = \vec{0}$
+			\item $c\vec{0} = \vec{0}$
+			\item $\vec{-u} = (-1)\vec{u}$
+		\end{enumerate}
+		
+		\item polynomials of a degree $n$ can be a vector space $\mathbb{P}^n$
+		
+		\item \textbf{subspace} of vector space $V$ is a subset, $H$, of $V$ that has three properties:
+		\begin{enumerate}
+			\item $H$ is a nonempty subset of $V$ $\Leftrightarrow \vec{0} \in H$
+			\item $\vec{u}, \vec{v} \in H$ implies $\vec{u} + \vec{v} \in H$ (closed under addition)
+			\item $\vec{u}\in H$ and scalar $c$ implies $c\vec{u} \in H$ (closed under multiplication)
+		\end{enumerate}
+		
+		\item a subspace is vector space, vector space is subspace
+		
+		\item see \autoref{thm:span-subspace-thm}
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1047,6 +1082,11 @@
 	\begin{theorem}
 		\label{thm:invertible-trans-thm}
 		A linear transformation $T: \mathbb{R}^n \rightarrow \mathbb{R}^n$ with standard matrix $A$ is invertible $\Leftrightarrow A$ is an invertible matrix. In that case, $\vec{b} \mapsto A^{-1}\vec{b}$ is the inverse function of $T$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:span-subspace-thm}
+		If $\finitevecs{\vec{v}}{p}$ are in a vector space $V$, then $Span\finitevecsset{\vec{v}}{p}$ is a subspace of $V$.
 	\end{theorem}
 	\newpage
 	
@@ -1428,5 +1468,9 @@
 		\end{equation*}
 		
 		\item[triangular matrix] a matrix that is either lower or upper triangular.
+		
+		\item[vector space] a vector space is a nonempty set of objects (called vectors).
+		
+		\item[subspace] subspace, $H$, is a vector space that contains the zero vector of the vector space it is a subspace of, and is closed under addition ($\vec{u}, \vec{v} \in H$ implies $\vec{u} + \vec{v} \in H$) and scalar multiplication ($\vec{u}\in H$ and scalar $c$ implies $c\vec{u} \in H$).
 	\end{description}
 \end{document}
