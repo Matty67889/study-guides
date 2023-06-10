@@ -105,6 +105,17 @@
 % arg 4: letter of variable used to represent the last underscored vector in the list
 \newcommand{\lincombo}[4]{\finiteadd{#1_1#2_1}{#1_2#2_2}{#1_#3#2_#4}}
 
+% \basiscoord
+% command for printing the notation for the coordinates of a vector relative to a basis
+% Usage: only use in math environments.
+% arg1: the letter that represents the vector
+% arg2: the the letter represents the name of the basis
+\newcommand{\basiscoord}[2]{
+	\begin{bmatrix}
+		\vec{#1}
+	\end{bmatrix}_#2
+}
+
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
 \date{January 24, 2023}
@@ -131,6 +142,9 @@
 		
 		\item \href{https://canvas.cornell.edu/courses/48198}{Cornell Spring 2023 semester Canvas notes (Professor Frans Schalekamp)}
 	\end{enumerate}
+	
+	\section{Usage}
+	This guide is meant to be a place to conveniently list most of the important information for the topic of linear algebra. It is also based on the Cornell course MATH 2940, as well as any other sources listed. This guide does not promise to cover all topics that one may be learning in a class they are participating in. It also does not promise to cover all the content from the Cornell course MATH 2940. This is best used either for review, or to read after reviewing the textbook on one's own time and using this to review the main ideas.
 	\newpage
 	
 	% Notes
@@ -884,6 +898,37 @@
 		
 		\item see \nameref{sec:solve-bases-fund-spcs}
 	\end{itemize}
+	
+	\subsection{Coordinate Systems}
+	\begin{itemize}
+		\item see \autoref{thm:uniq-rep-thm}
+		
+		Given $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$, where $B = \finitevecsset{b}{n}$:
+		
+		\item the \textbf{coordinates} of $\vec{x}$ relative to $B$ are the weights $\finitevecs{c}{n}$ ($\basiscoord{x}{B}
+		=
+		\begin{bmatrix}
+			\vec{c_1}\\
+			\vec{c_2}\\
+			\vdots\\
+			\vec{c_n}\\
+		\end{bmatrix}$)
+		
+		\item the \textbf{change of coordinates} matrix is a matrix such that when the coordinates of $\vec{x}$ relative to $B$ is multiplied by it, $\vec{x}$ is produced. It is denoted $P_B$ ($P_B =
+		\begin{bmatrix}
+			b_1 & b_2 & \ldots &b_n
+		\end{bmatrix}$)
+		
+		\item $\vec{x} = P_B\basiscoord{x}{B}$, $P^{-1}_B\vec{x} = \basiscoord{x}{B}$
+		
+		\item $P^{-1}_B$ is change-of-coordinates matrix from standard basis to $B$
+		
+		\item $\vec{x} \mapsto \basiscoord{x}{B}$ is one-to-one and onto linear transformation
+		
+		\item $\mateq{T}{(\vec{x})}{\basiscoord{x}{B}}$ is a linear transformation, one-to-one, onto
+		
+		\item an \textbf{isomorphism} is a linear transformation that is both one-to-one and onto.
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1147,6 +1192,11 @@
 	\begin{theorem}
 		\label{thm:row-space-equiv-thm}
 		The row space of a matrix does not change after performing one row operation. (Row$A$ = Row$B$ if $B$ can be obtained from $A$ by performing 1 row operation)
+	\end{theorem}
+	
+	\begin{theorem}[Unique Representation Theorem]
+		\label{thm:uniq-rep-thm}
+		Given $B = \finitevecsset{b}{n}$ be a basis for vector space $V$. For any $\vec{x} \in V$ there is a unique set of scalars $\finitevecs{c}{n}$ such that $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$
 	\end{theorem}
 	\newpage
 	
@@ -1488,13 +1538,17 @@
 	
 	% Terminology
 	\section{Terminology}
-	\subsection{Symbols}
-	\begin{description}[style=nextline]
+	\subsection{Notation}
+	\begin{description}
 		\item[$\sim$] a symbol used to represent row equivalence between two matrices.
 		
 		\item[$\blacksquare$] a symbol used to represent a nonzero number
 		
 		\item[*] a symbol used to represent any number
+		
+		\item[$\basiscoord{x}{B}$] the coordinates of $\vec{x}$ relative to the basis $B$
+		
+		\item[$P_B$] a change-of-coordinates matrix relative to basis $B$
 	\end{description}
 	
 	\subsection{Definitions}
@@ -1689,5 +1743,12 @@
 			\item $B$ is a linearly independent set
 			\item $H =$ span$\{B\}$
 		\end{enumerate}
+		
+		\item[coordinates relative to a basis] given $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$, where $B = \finitevecsset{b}{n}$:
+		the \textbf{coordinates relative to a basis} of $\vec{x}$ relative to $B$ are the weights $\finitevecs{c}{n}$
+		
+		\item[change-of-coordinates matrix] a matrix such that the result of multiplying it and the coordinates of a vector relative to a basis is the vector.
+		
+		\item[isomorphism] a linear transformation that is both one-to-one and onto.
 	\end{description}
 \end{document}
