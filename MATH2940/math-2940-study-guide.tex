@@ -868,6 +868,22 @@
 	\begin{itemize}
 		\item see \nameref{sec:solve-fund-spcs} to solve for these mathematically
 	\end{itemize}
+	
+	\subsection{Bases and Bases for Fundamental Spaces}
+	\begin{itemize}
+		\item a \textbf{basis} is a linearly independent set of vectors that span a subspace
+		
+		\item If $H$ is a subspace of $V$, a set of vectors $B \subseteq V$ is a \textbf{basis} for $H$ means
+		\begin{enumerate}[i.]
+			\item $B$ is a linearly independent set
+			\item $H =$ span$\{B\}$
+		\end{enumerate}
+		
+		\item see \autoref{thm:lin-dep-vec-set-thm}, \autoref{thm:spanning-set-thm}, \autoref{thm:basis-col-space-thm},
+		\autoref{thm:row-space-equiv-thm}
+		
+		\item see \nameref{sec:solve-bases-fund-spcs}
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1111,6 +1127,26 @@
 	\begin{theorem}
 		\label{thm:span-subspace-thm}
 		If $\finitevecs{\vec{v}}{p}$ are in a vector space $V$, then $Span\finitevecsset{\vec{v}}{p}$ is a subspace of $V$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-dep-vec-set-thm}
+		$\finitevecsset{v}{p}$ ($p \geq 2$) is linearly dependent $\Leftrightarrow$ one of the vectors is a linear combination of the others
+	\end{theorem}
+	
+	\begin{theorem}[The Spanning Set Theorem]
+		\label{thm:spanning-set-thm}
+		Given $H$ = span$\finitevecsset{\vec{v}}{p}$ we can repeatedly find a vector that is a linear combination of the others and delete this vector from the generating set until we have a linearly independent set of vectors that still spans $S$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:basis-col-space-thm}
+		The pivot columns of matrix $A$ form a basis for Col$A$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:row-space-equiv-thm}
+		The row space of a matrix does not change after performing one row operation. (Row$A$ = Row$B$ if $B$ can be obtained from $A$ by performing 1 row operation)
 	\end{theorem}
 	\newpage
 	
@@ -1427,16 +1463,24 @@
 	\end{enumerate}
 	
 	\subsection{Solving for the Bases of the Fundamental Spaces}
-	To solve for a basis of Col$A$:
+	\label{sec:solve-bases-fund-spcs}
+	To solve for a basis of \textbf{Nul}$A$:
+	\begin{enumerate}
+		\item Solve for $\vec{x}$ in parametric vector form in $\mateqaxo$ (using G.J. elimination).
+		
+		\item Nul$A$ is the  the set of vectors that the free variables are multiplied by.
+	\end{enumerate}
+	
+	To solve for a basis of \textbf{Col}$A$:
 	\begin{enumerate}
 		\item Use G.J. elimination to find the echelon form of $A$.
 		
 		\item Identify the pivot columns of $A$
 		
-		\item Col$A$ is the set of vectors that in the pivot columns of the echelon form of $A$ in the the original matrix $A$.
+		\item Col$A$ is the set of vectors that are in the pivot columns of the echelon form of $A$ in the the original matrix $A$.
 	\end{enumerate}
 	
-	To solve for a basis of \textbf{Row$A$}:
+	To solve for a basis of \textbf{Row}$A$:
 	\begin{enumerate}
 		\item Row$A$ is all the nonzero vectors in the original matrix $A$ or in the echelon form of $A$.
 	\end{enumerate}
@@ -1639,5 +1683,11 @@
 		\item[row space] a vector space that is the set of all linear combinations of the rows of A. denoted by Row$A$. Row$A$ = Col$A^T$.
 		
 		\item[kernel] the set of all $\vec{u}$ such that $\mateq{T}{(\vec{x})}{\vec{0}}$.
+		
+		\item[basis] If $H$ is a subspace of $V$, a set of vectors $B \subseteq V$ is a \textbf{basis} for $H$ means
+		\begin{enumerate}[i.]
+			\item $B$ is a linearly independent set
+			\item $H =$ span$\{B\}$
+		\end{enumerate}
 	\end{description}
 \end{document}
