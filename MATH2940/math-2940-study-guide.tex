@@ -109,11 +109,20 @@
 % command for printing the notation for the coordinates of a vector relative to a basis
 % Usage: only use in math environments.
 % arg1: the letter that represents the vector
-% arg2: the the letter represents the name of the basis
+% arg2: the letter represents the name of the basis
 \newcommand{\basiscoord}[2]{
 	\begin{bmatrix}
 		\vec{#1}
 	\end{bmatrix}_#2
+}
+
+% \chngbasismat
+% command for printing the notation of a change of basis matrix from one base to another
+% Usage: only use in math environments.
+% arg1: the letter that represents the basis that is being converted from
+% arg2: the letter that represents the basis that is being converted to
+\newcommand{\chngbasismat}[2]{
+	\underset{#2 \leftarrow #1}{P}
 }
 
 \title{MATH 2940 Study Guide}
@@ -883,7 +892,7 @@
 		\item see \nameref{sec:solve-fund-spcs} to solve for these mathematically
 	\end{itemize}
 	
-	\subsection{Bases and Bases for Fundamental Spaces}
+	\subsection{Bases, Bases for Fundamental Spaces, Change of Bases}
 	\begin{itemize}
 		\item a \textbf{basis} is a linearly independent set of vectors that span a subspace
 		
@@ -928,6 +937,46 @@
 		\item $\mateq{T}{(\vec{x})}{\basiscoord{x}{B}}$ is a linear transformation, one-to-one, onto
 		
 		\item an \textbf{isomorphism} is a linear transformation that is both one-to-one and onto.
+		
+		\item \textbf{change-of-coordinate-matrix} is a square matrix that converts from coordinates in one base to another. denoted $\chngbasismat{B}{C}$ for bases $B, C$
+		
+		\item Given base $B = \finitevecsset{b}{n}$ and $C = \finitevecsset{c}{n}$ are bases of vector space $V$:
+		\begin{equation*}
+			\basiscoord{x}{C} = \chngbasismat{B}{C}\basiscoord{x}{B}
+		\end{equation*}
+		
+		\begin{equation*}
+			\chngbasismat{B}{C}
+			=
+			\begin{bmatrix}
+				\basiscoord{b_1}{C} & \basiscoord{b_2}{C} & \ldots & \basiscoord{b_n}{C}
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item $(\chngbasismat{B}{C})^{-1} = \chngbasismat{C}{B}$
+		
+		\item $\begin{bmatrix}
+			\vec{c_1} & \vec{c_2} & \vdots & \vec{b_1} & \vec{b_2}
+		\end{bmatrix}
+		\sim
+		\begin{bmatrix}
+			I & \vdots & \chngbasismat{B}{C}
+		\end{bmatrix}$
+	\end{itemize}
+	
+	\subsection{Dimensions}
+	\begin{itemize}
+		\item \textbf{dimension}: number of vectors in a basis of a vector space $V$ (provided there are a finite number of vectors). denoted dim($V$).
+		
+		\item see \autoref{thm:vec-spc-same-num-vec-thm}, \autoref{thm:vec-spc-lin-dep}
+		
+		\item dim($\vec{0}$) = 0
+		
+		\item rank$A$ = dim(Col$A$) = dim(Row$A$) = number of pivot columns of $A$ = number of rows with a pivot in EF of $A$
+		
+		\item dim(Nul$A$) = nullity of A = \# of non pivot columns in $A$.
+		
+		\item see \autoref{thm:rank-nul-thm}, \autoref{thm:imt-thm} (adds some new content with this knowledge), \autoref{thm:vec-spc-dim-thm}
 	\end{itemize}
 	\newpage
 	
@@ -1161,6 +1210,11 @@
 			\item the transformation $\vec{x} \mapsto A\vec{x}$ is one-to-one
 			\item there exists an $n \times n$ matrix $C$ such that $\mateq{C}{A}{I}$
 			\item there exists an $n \times n$ matrix $D$ such that $\mateq{A}{D}{I}$
+			\item The columns of $A$ form a basis of $\mathbb{R}^n$
+			\item Col$A = \mathbb{R}^n$
+			\item rank$A = n$
+			\item nullity$A = 0$
+			\item Nul$A = \{\vec{0}\}$
 		\end{enumerate}
 	\end{theorem}
 	
@@ -1197,6 +1251,31 @@
 	\begin{theorem}[Unique Representation Theorem]
 		\label{thm:uniq-rep-thm}
 		Given $B = \finitevecsset{b}{n}$ be a basis for vector space $V$. For any $\vec{x} \in V$ there is a unique set of scalars $\finitevecs{c}{n}$ such that $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:vec-spc-lin-dep}
+		$V$ vector space, with basis $B = \finitevecs{\vec{b}}{n}$: Any set of vectors in $V$ with more than $n$ vectors ($n =$ \# vectors in $B$) is linearly dependent.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:vec-spc-same-num-vec-thm}
+		Every basis for vector space $V$ has same \# of vectors.
+	\end{theorem}
+	
+	\begin{theorem}[Rank-Nullity Theorem]
+		\label{thm:rank-nul-thm}
+		rank$A$ + nullity of $A = n$
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:vec-spc-dim-thm}
+		Given vector space $V$, dim$V$ = p,
+		\begin{enumerate}[a.]
+			\item Any linearly independent set of size $p$ is a basis for $V$.
+			
+			\item Any set of $p$ vectors that spans $V$ is a basis for $V$.
+		\end{enumerate}
 	\end{theorem}
 	\newpage
 	
@@ -1549,6 +1628,10 @@
 		\item[$\basiscoord{x}{B}$] the coordinates of $\vec{x}$ relative to the basis $B$
 		
 		\item[$P_B$] a change-of-coordinates matrix relative to basis $B$
+		
+		\item[dim($V$)] the dimension of the basis $V$.
+		
+		\item[$\chngbasismat{B}{C}$] a change-of-coordinates matrix from basis $B$ to basis $C$.
 	\end{description}
 	
 	\subsection{Definitions}
@@ -1747,8 +1830,12 @@
 		\item[coordinates relative to a basis] given $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$, where $B = \finitevecsset{b}{n}$:
 		the \textbf{coordinates relative to a basis} of $\vec{x}$ relative to $B$ are the weights $\finitevecs{c}{n}$
 		
-		\item[change-of-coordinates matrix] a matrix such that the result of multiplying it and the coordinates of a vector relative to a basis is the vector.
+		\item[change-of-coordinates matrix] a square matrix such that the result of multiplying it and the coordinates of a vector relative to a basis is the vector.
 		
 		\item[isomorphism] a linear transformation that is both one-to-one and onto.
+		
+		\item[dimension of a basis] the number of vectors in a basis of a vector space $V$ (provided there are a finite number of vectors).
+		
+		\item[change-of-coordinate-matrix] is a square matrix that converts from coordinates in one base to another.
 	\end{description}
 \end{document}
