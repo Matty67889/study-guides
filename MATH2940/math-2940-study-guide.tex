@@ -1040,6 +1040,17 @@
 		
 		\item see \autoref{similar-mat-char-eq-thm}
 	\end{itemize}
+	
+	\subsection{Diagonalization (another factorization)}
+	\begin{itemize}
+		\item a matrix $A$ is \textbf{diagonalizable} if it is similar to a diagonal matrix $D$, which is the same thing as saying there exists an invertible matrix $P$ such that $A = PDP^{-1}$
+		
+		\item if a matrix is diagonalizable, it is very easy to find $A^k$
+		
+		\item see \autoref{thm:diagonlization-thm}, \autoref{thm:eigenvec-diagonlization-thm}
+		
+		\item to diagonlize a matrix, see \nameref{sec:diagonlizing-matrices}
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1353,6 +1364,35 @@
 	\begin{theorem}
 		\label{similar-mat-char-eq-thm}
 		Similar matrices have same characteristic equation and same eigenvalues
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:diagonlization-thm}
+		$n \times n$ matrix $A$ is diagonlizable $\Leftarrow$ there are $n$ eigenvectors of $A$ that are linearly independent. $P$ can be constructed using these eigenvectors as columns, and $D$ can be constructured by putting the corresponding eigenvalues of $A$ on the diagonal (in the same order as the eigenvectors). To visualize this:
+		\begin{equation*}
+			A =
+			\underset{P}{
+				\begin{bmatrix}
+					\vec{p_1} & \vec{p_2} & \ldots & \vec{p_n}
+				\end{bmatrix}
+			}
+			\underset{D}{
+				\begin{bmatrix}
+					\vec{\lambda_1} & 0 & \ldots & 0\\
+					0 & \vec{\lambda_2} & 0 & \vdots\\
+					\vdots & 0 & \ddots & 0\\
+					0 & \ldots & 0 & \vec{\lambda_n}
+				\end{bmatrix}
+			}
+			P^{-1}
+		\end{equation*}
+		
+		where $\finitevecsset{p}{n}$ is the set of eigenvectors, $\finitevecsset{\lambda}{n}$ is the set of eigenvalues, and $\lambda_i$ is the eigenvalue corresponding to eigenvector $\vec{p_i}$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:eigenvec-diagonlization-thm}
+		An $n \times n$ matrix with $n$ eigenvectors is diagonlizable.
 	\end{theorem}
 	\newpage
 	
@@ -1729,6 +1769,37 @@
 	\begin{enumerate}
 		\item Solve the equation $\chareq$.
 	\end{enumerate}
+	
+	\subsection{Diagonlizing Matrices}
+	\label{sec:diagonlizing-matrices}
+	To diagonlize a matrix $A$:
+	\begin{enumerate}
+		\item Find the eigenvalues of $A$.
+		
+		\item Find a set of linearly independent vectors equal to the number of columns (or rows, since $A$ is square) of $A$ (so basically just find eigenvectors corresponding to eigenvalues of $A$).
+		
+		\item Construct $P$ and $D$ according to the structure outlined in \autoref{thm:diagonlization-thm}:
+		
+		\begin{equation*}
+			A =
+			\underset{P}{
+				\begin{bmatrix}
+					\vec{p_1} & \vec{p_2} & \ldots & \vec{p_n}
+				\end{bmatrix}
+			}
+			\underset{D}{
+				\begin{bmatrix}
+					\vec{\lambda_1} & 0 & \ldots & 0\\
+					0 & \vec{\lambda_2} & 0 & \vdots\\
+					\vdots & 0 & \ddots & 0\\
+					0 & \ldots & 0 & \vec{\lambda_n}
+				\end{bmatrix}
+			}
+			P^{-1}
+		\end{equation*}
+		
+		where $\finitevecsset{p}{n}$ is the set of eigenvectors, $\finitevecsset{\lambda}{n}$ is the set of eigenvalues, and $\lambda_i$ is the eigenvalue corresponding to eigenvector $\vec{p_i}$.
+	\end{enumerate}
 	\newpage
 	
 	% Terminology
@@ -1967,5 +2038,7 @@
 		\item[characteristic equation] the characteristic equation of a matrix $A$ is $\chareq$.
 		
 		\item[similar] two matrices $A$ and $B$ are similar if there exists an invertible matrix $P$ such that $A = PBP^{-1}$.
+		
+		\item[diagonalizable] a matrix $A$ is diagonalizable if it is similar to a diagonal matrix $D$ (basically $A = PDP^{-1}$, where $P$ is an invertible matrix).
 	\end{description}
 \end{document}
