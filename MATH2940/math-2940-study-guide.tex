@@ -81,6 +81,9 @@
 \newcommand{\mateqaxb}{\mateq{A}{\vec{x}}{\vec{b}}}
 % command that is the same thing as \mateq, but with arg1 = A, arg2 = \vec{x}, arg3 = 0
 \newcommand{\mateqaxo}{\mateq{A}{\vec{x}}{\vec{0}}}
+%\eigeneq
+% command that is the same as \mateq, with arg1 = A, arg2 = \vec{x}, arg3 = \lambda\vec{x} 
+\newcommand{\eigeneq}{\mateq{A}{\vec{x}}{\lambda\vec{x}}}
 
 % command for writing finite set of vectors. only works in math environments
 % arg 1: letter of the variable that used to represent the vectors
@@ -124,6 +127,11 @@
 \newcommand{\chngbasismat}[2]{
 	\underset{#2 \leftarrow #1}{P}
 }
+
+% \chareq
+% command for printing the characteristic equation
+% Usage: only use in math environments
+\newcommand{\chareq}{\text{det}(A - \lambda I) = 0}
 
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
@@ -996,6 +1004,9 @@
 			\item the determinant of a matrix $B$ obtained by a row interchange on a matrix is $-$det$A$
 			\item scaling operation by a scalar $k$ makes the determinant $k$det$S$
 			\item the determinant of a diagonal or triangular matrix is the product of its diagonal entries
+			\item det$A$ = det$A^T$
+			\item det$AB$ = (det$A$)(det$B$), det$A^2$ = $(\text{det}A)^2$
+			\item det$A^{-1}$ = $\frac{1}{\text{det}A}$
 		\end{enumerate}
 		
 		\item det($
@@ -1004,9 +1015,30 @@
 			c & d\\
 		\end{bmatrix}$) $= ad - bc$
 		
-		\item det$A$ = det$A^T$
+		\item to solve for determinant of matrix, see \nameref{sec:co-factor-exp}
+	\end{itemize}
+	
+	\subsection{Entering the Eigenarena}
+	\begin{itemize}
+		\item the following only applies to \textbf{square} matrices
 		
-		\item det$AB$ = (det$A$)(det$B$), det$A^2$ = $(\text{det}A)^2$, det$A^{-1}$ = $\frac{1}{\text{det}A}$
+		\item \textbf{eigenvalues} (denoted $\lambda$) are scalars that fulfill the $\eigeneq$, and \textbf{eigenvectors} are the $\vec{x}$ that correspond to the eigenvalue in the equation
+		
+		\item if given an eigenvalue ($\lambda$) of a matrix $A$, finding eigenvectors corresponding to $\lambda$ corresponds to solving $(A - \lambda I)\vec{x} = \vec{0}$. the solution set to this system is called the \textbf{eigenspace} corresponding to $\lambda$ (which is essentially Nul$A - \lambda I$)
+		
+		\item eigenvalues of triangular matrix are the values on its main diagonal
+		
+		\item see \autoref{thm:eigen-vec-lin-indep-thm}
+		
+		\item \textbf{characteristic equation} of $A$ is $\chareq$. To find eigenvalues of $A$, solve this equation
+		
+		\item to find eigenspaces and eigenvalues, see \nameref{sec:finding-eigenspcs-and-eigenvals}
+		
+		\item see \autoref{thm:zero-eigenval-invertibility-thm}
+		
+		\item $A$ and $B$ are \textbf{similar} means there exists an invertible matrix $P$ such that $A = PBP^{-1}$
+		
+		\item see \autoref{similar-mat-char-eq-thm}
 	\end{itemize}
 	\newpage
 	
@@ -1306,6 +1338,21 @@
 			
 			\item Any set of $p$ vectors that spans $V$ is a basis for $V$.
 		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:eigen-vec-lin-indep-thm}
+		Given distinct eigenvalues $\finitevecs{\lambda}{p}$ with eigenvectors $\finitevecs{\vec{x}}{p}$, $\finitevecsset{\vec{x}}{p}$ is linearly independent.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:zero-eigenval-invertibility-thm}
+		$A$ is invertible $\Leftrightarrow$ 0 is not an eigenvalue of $A$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{similar-mat-char-eq-thm}
+		Similar matrices have same characteristic equation and same eigenvalues
 	\end{theorem}
 	\newpage
 	
@@ -1645,6 +1692,8 @@
 	\end{enumerate}
 	
 	\subsection{Finding the Determinant (Co-factor Expansion)}
+	\label{sec:co-factor-exp}
+	
 	Assuming the original matrix is $A$:
 	\begin{enumerate}
 		\item Find a row or column where there are all 0s except for one entry. If there is not already one, use row operations to make a row or column have all 0s except for one entry in that row or column. It does not matter which entry is you decide to make nonzero (so it does not need to be picked such that the reduced form of the matrix corresponds to echelon form). It's usually a good idea to pick a row or column with a lot of 0s already in it. We will denote the row that the nonzero entry is in with $i$, the column it is in with $j$, and the entry itself with $m$.
@@ -1668,6 +1717,18 @@
 	\end{equation*}
 	
 	where $M_{ij}$ is $A$ with row $i$ and column $j$ deleted.
+	
+	\subsection{Finding Eigenspaces and Eigenvalues}
+	\label{sec:finding-eigenspcs-and-eigenvals}
+	To find an \textbf{eigenspace} corresponding to an eigenvalue:
+	\begin{enumerate}
+		\item Solve the equation $(A - \lambda I)\vec{x} = \vec{0}$. The set of vectors being multiplied by the free variables form a basis for the eigenspace corresponding to $\lambda$ for $A$.
+	\end{enumerate}
+	
+	To find all \textbf{eigenvalues} of a matrix:
+	\begin{enumerate}
+		\item Solve the equation $\chareq$.
+	\end{enumerate}
 	\newpage
 	
 	% Terminology
@@ -1689,6 +1750,8 @@
 		\item[$\chngbasismat{B}{C}$] a change-of-coordinates matrix from basis $B$ to basis $C$.
 		
 		\item[det$A$] the determinant of the matrix $A$.
+		
+		\item[$\lambda$] an eigenvalue corresponding to an eigenvector.
 	\end{description}
 	
 	\subsection{Definitions}
@@ -1896,5 +1959,13 @@
 		\item[change-of-coordinate-matrix] is a square matrix that converts from coordinates in one base to another.
 		
 		\item[determinant] the volume of a geometric object with edges as the rows of a matrix $A$.
+		
+		\item[eigenvalues and eigenvectors] eigenvalues are scalars that fulfill $\eigeneq$, and eigenvectors are the nonzero vectors $\vec{x}$ that correspond to the eigenvalue in the equation.
+		
+		\item[eigenspace corresponding to $\lambda$] the solution set to $(A - \lambda I)\vec{x} = \vec{0}$ for a matrix $A$ (essentially Nul$A - \lambda I$).
+		
+		\item[characteristic equation] the characteristic equation of a matrix $A$ is $\chareq$.
+		
+		\item[similar] two matrices $A$ and $B$ are similar if there exists an invertible matrix $P$ such that $A = PBP^{-1}$.
 	\end{description}
 \end{document}
