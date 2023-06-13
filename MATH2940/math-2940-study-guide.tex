@@ -978,6 +978,36 @@
 		
 		\item see \autoref{thm:rank-nul-thm}, \autoref{thm:imt-thm} (adds some new content with this knowledge), \autoref{thm:vec-spc-dim-thm}
 	\end{itemize}
+	
+	\subsection{Determinants}
+	\begin{itemize}
+		\item the following only applies for \textbf{square} matrices
+		
+		\item \textbf{determinant} is the volume of a geometric object with edges as the rows of $A$
+		
+		\item det$A = 0 \Leftrightarrow A$ is not invertible
+		
+		\item Properties of determinants:
+		\begin{enumerate}
+			\item det$I$ = 1
+			\item if $A$ has 2 rows that are the same, det$A$ = 0
+			\item If a matrix has a row of 0s, then det$A$ = 0
+			\item replacement operations do not change determinant
+			\item the determinant of a matrix $B$ obtained by a row interchange on a matrix is $-$det$A$
+			\item scaling operation by a scalar $k$ makes the determinant $k$det$S$
+			\item the determinant of a diagonal or triangular matrix is the product of its diagonal entries
+		\end{enumerate}
+		
+		\item det($
+		\begin{bmatrix}
+			a & b\\
+			c & d\\
+		\end{bmatrix}$) $= ad - bc$
+		
+		\item det$A$ = det$A^T$
+		
+		\item det$AB$ = (det$A$)(det$B$), det$A^2$ = $(\text{det}A)^2$, det$A^{-1}$ = $\frac{1}{\text{det}A}$
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1613,6 +1643,31 @@
 	\begin{enumerate}
 		\item Row$A$ is all the nonzero vectors in the original matrix $A$ or in the echelon form of $A$.
 	\end{enumerate}
+	
+	\subsection{Finding the Determinant (Co-factor Expansion)}
+	Assuming the original matrix is $A$:
+	\begin{enumerate}
+		\item Find a row or column where there are all 0s except for one entry. If there is not already one, use row operations to make a row or column have all 0s except for one entry in that row or column. It does not matter which entry is you decide to make nonzero (so it does not need to be picked such that the reduced form of the matrix corresponds to echelon form). It's usually a good idea to pick a row or column with a lot of 0s already in it. We will denote the row that the nonzero entry is in with $i$, the column it is in with $j$, and the entry itself with $m$.
+		
+		\item The determinant of your starting matrix will be  $m(-1)^{i + j}B$, where $B$ is the matrix obtained by deleting row $i$ and column $j$ from $A$.
+		
+		\item Repeat step 1 until a number is generated from the equation.
+	\end{enumerate}
+	
+	For reference, the actual Co-factor expansion formula is
+	
+	for using $i$-th row:
+	\begin{equation*}
+		\text{det}A = \sum_{j = 1}^{n}a_{ij}(-1)^{i + j}\text{det}M_{ij}
+	\end{equation*}
+	
+	or, for using $j$-th column:
+	
+	\begin{equation*}
+		\text{det}A = \sum_{i = 1}^{n}a_{ij}(-1)^{i + j}\text{det}M_{ij}
+	\end{equation*}
+	
+	where $M_{ij}$ is $A$ with row $i$ and column $j$ deleted.
 	\newpage
 	
 	% Terminology
@@ -1632,6 +1687,8 @@
 		\item[dim($V$)] the dimension of the basis $V$.
 		
 		\item[$\chngbasismat{B}{C}$] a change-of-coordinates matrix from basis $B$ to basis $C$.
+		
+		\item[det$A$] the determinant of the matrix $A$.
 	\end{description}
 	
 	\subsection{Definitions}
@@ -1837,5 +1894,7 @@
 		\item[dimension of a basis] the number of vectors in a basis of a vector space $V$ (provided there are a finite number of vectors).
 		
 		\item[change-of-coordinate-matrix] is a square matrix that converts from coordinates in one base to another.
+		
+		\item[determinant] the volume of a geometric object with edges as the rows of a matrix $A$.
 	\end{description}
 \end{document}
