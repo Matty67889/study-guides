@@ -115,6 +115,13 @@
 % arg2: the letter represents the name of the basis
 \newcommand{\basiscoord}[2]{
 	\begin{bmatrix}
+		#1
+	\end{bmatrix}_#2
+}
+% \basiscoordvec
+% the same thing as \basiscoord, but with arg1 always being formatted as a vector.
+\newcommand{\basiscoordvec}[2]{
+	\begin{bmatrix}
 		\vec{#1}
 	\end{bmatrix}_#2
 }
@@ -922,7 +929,7 @@
 		
 		Given $\vec{x} = \finiteadd{c_1\vec{b_1}}{c_2\vec{b_2}}{c_n\vec{b_n}}$, where $B = \finitevecsset{b}{n}$:
 		
-		\item the \textbf{coordinates} of $\vec{x}$ relative to $B$ are the weights $\finitevecs{c}{n}$ ($\basiscoord{x}{B}
+		\item the \textbf{coordinates} of $\vec{x}$ relative to $B$ are the weights $\finitevecs{c}{n}$ ($\basiscoordvec{x}{B}
 		=
 		\begin{bmatrix}
 			\vec{c_1}\\
@@ -936,13 +943,13 @@
 			b_1 & b_2 & \ldots &b_n
 		\end{bmatrix}$)
 		
-		\item $\vec{x} = P_B\basiscoord{x}{B}$, $P^{-1}_B\vec{x} = \basiscoord{x}{B}$
+		\item $\vec{x} = P_B\basiscoordvec{x}{B}$, $P^{-1}_B\vec{x} = \basiscoordvec{x}{B}$
 		
 		\item $P^{-1}_B$ is change-of-coordinates matrix from standard basis to $B$
 		
-		\item $\vec{x} \mapsto \basiscoord{x}{B}$ is one-to-one and onto linear transformation
+		\item $\vec{x} \mapsto \basiscoordvec{x}{B}$ is one-to-one and onto linear transformation
 		
-		\item $\mateq{T}{(\vec{x})}{\basiscoord{x}{B}}$ is a linear transformation, one-to-one, onto
+		\item $\mateq{T}{(\vec{x})}{\basiscoordvec{x}{B}}$ is a linear transformation, one-to-one, onto
 		
 		\item an \textbf{isomorphism} is a linear transformation that is both one-to-one and onto.
 		
@@ -950,14 +957,14 @@
 		
 		\item Given base $B = \finitevecsset{b}{n}$ and $C = \finitevecsset{c}{n}$ are bases of vector space $V$:
 		\begin{equation*}
-			\basiscoord{x}{C} = \chngbasismat{B}{C}\basiscoord{x}{B}
+			\basiscoordvec{x}{C} = \chngbasismat{B}{C}\basiscoordvec{x}{B}
 		\end{equation*}
 		
 		\begin{equation*}
 			\chngbasismat{B}{C}
 			=
 			\begin{bmatrix}
-				\basiscoord{b_1}{C} & \basiscoord{b_2}{C} & \ldots & \basiscoord{b_n}{C}
+				\basiscoordvec{b_1}{C} & \basiscoordvec{b_2}{C} & \ldots & \basiscoordvec{b_n}{C}
 			\end{bmatrix}
 		\end{equation*}
 		
@@ -1022,7 +1029,7 @@
 	\begin{itemize}
 		\item the following only applies to \textbf{square} matrices
 		
-		\item \textbf{eigenvalues} (denoted $\lambda$) are scalars that fulfill the $\eigeneq$, and \textbf{eigenvectors} are the $\vec{x}$ that correspond to the eigenvalue in the equation
+		\item \textbf{eigenvalues} (denoted $\lambda$) are scalars that fulfill the $\eigeneq$ (basically saying that multiplying $A$ by $\vec{x}$ gives a scaled version of $\vec{x}$), and \textbf{eigenvectors} are the $\vec{x}$ that correspond to the eigenvalue in the equation
 		
 		\item if given an eigenvalue ($\lambda$) of a matrix $A$, finding eigenvectors corresponding to $\lambda$ corresponds to solving $(A - \lambda I)\vec{x} = \vec{0}$. the solution set to this system is called the \textbf{eigenspace} corresponding to $\lambda$ (which is essentially Nul$A - \lambda I$)
 		
@@ -1034,15 +1041,33 @@
 		
 		\item to find eigenspaces and eigenvalues, see \nameref{sec:finding-eigenspcs-and-eigenvals}
 		
+%		TODO: make a command for printing a finite set of fractions
+		\item if $A$ has eigenvalues $\finitevecs{\lambda}{n}$, then $A^{-1}$ has eigenvalues $\frac{1}{\lambda_1}, \ldots \frac{1}{\lambda_n}$
+		
 		\item see \autoref{thm:zero-eigenval-invertibility-thm}
 		
 		\item $A$ and $B$ are \textbf{similar} means there exists an invertible matrix $P$ such that $A = PBP^{-1}$
 		
 		\item see \autoref{similar-mat-char-eq-thm}
 	\end{itemize}
+		
+	\subsubsection{Transformations in the Eigenarena}
+	\begin{itemize}
+		\item $\lambda$ and $\vec{x}$ are an eigenvalue and eigenvector of $T$ means $T(\vec{x}) = \lambda\vec{x}$
+		
+		\item to find matrix for $T$ relative to basis $B$:
+		\begin{equation*}
+			M =
+			\begin{bmatrix}
+				\basiscoord{T(\vec{b_1})}{B} & \basiscoord{T(\vec{b_2})}{B} & \ldots \basiscoord{T(\vec{b_n})}{B}
+			\end{bmatrix}
+		\end{equation*}
+	\end{itemize}
 	
 	\subsection{Diagonalization (another factorization)}
 	\begin{itemize}
+		\item the following only applies to \textbf{square} matrices
+		
 		\item a matrix $A$ is \textbf{diagonalizable} if it is similar to a diagonal matrix $D$, which is the same thing as saying there exists an invertible matrix $P$ such that $A = PDP^{-1}$
 		
 		\item if a matrix is diagonalizable, it is very easy to find $A^k$
@@ -1050,6 +1075,54 @@
 		\item see \autoref{thm:diagonlization-thm}, \autoref{thm:eigenvec-diagonlization-thm}
 		
 		\item to diagonlize a matrix, see \nameref{sec:diagonlizing-matrices}
+		
+		\item $A^k = PD^kP^{-1}$
+	\end{itemize}
+	
+	\subsection{Power Method}
+	\begin{itemize}
+		\item method to find approximate eigenvalues and eigenvectors using a computer
+		
+		\item to estimate a strictly dominant eigenvalue \nameref{sec:power-method}
+	\end{itemize}
+	
+	\subsection{Complex Eigenvalues}
+	\begin{itemize}
+		\item eigenvalues can unfortunately be complex numbers
+		
+		\item matrices with complex eigenvalues correspond to rotations in terms of transformations
+		
+		\item $A^k$ will have real eigenvalues if $A$ has real eigenvalues
+		
+		\item complex numbers have a real part and imaginary part. Re$(z)$ represents the real part of the complex number $z$, and Im$(z)$ is the imaginary part. $z =$ Re$(z)$ $+$ $i$Im$(z)$
+		
+		\item \textbf{Properties of complex number algebra} ($B$ is an $m \times n$ matrix, $\bar{B}$ is a matrix whose entries are the complex conjugates of entries in $B$, $r$ is a complex number, $\vec{x}$ is a vector):
+		
+		\begin{itemize}
+			\item $\overline{r\vec{x}} = \overline{r}\overline{\vec{x}}$
+			
+			\item $\overline{B\vec{x}} = \overline{B}\overline{\vec{x}}$
+			
+			\item $\overline{BC} = \overline{B}\overline{C}$
+			
+			\item $\overline{rB} = \overline{r}\overline{B}$
+		\end{itemize}
+		
+		\item because of these properties, if $\lambda =$ Re$(z)$ $+$ $i$Im$(z)$, then $\bar{\lambda} =$ Re$(z)$ $-$ $i$Im$(z)$ is also an eigenvalue of $A$, where $\bar{\lambda}$ is the complex conjugate of $A$
+		
+		\item If $A$ is real $2 \times 2$ matrix with complex eigenvalues $\lambda_1 = a + ib$ and $\lambda_2 = a - ib$ ($b \neq 0$) and corresponding eigenvector for $\lambda_1$ $\vec{v}$, then:
+		\begin{align*}
+			A &= PCP^{-1}\\
+			C &=
+			\begin{bmatrix}
+				a & -b\\
+				b & a
+			\end{bmatrix}\\
+			P &=
+			\begin{bmatrix}
+				\text{Re}(\vec{v}) & \textbf{Im}(\vec{v})
+			\end{bmatrix}
+		\end{align*}
 	\end{itemize}
 	\newpage
 	
@@ -1798,7 +1871,24 @@
 			P^{-1}
 		\end{equation*}
 		
-		where $\finitevecsset{p}{n}$ is the set of eigenvectors, $\finitevecsset{\lambda}{n}$ is the set of eigenvalues, and $\lambda_i$ is the eigenvalue corresponding to eigenvector $\vec{p_i}$.
+		where $\finitevecsset{\vec{p}}{n}$ is the set of eigenvectors, $\finitevecsset{\lambda}{n}$ is the set of eigenvalues, and $\lambda_i$ is the eigenvalue corresponding to eigenvector $\vec{p_i}$.
+	\end{enumerate}
+	
+	\subsection{Using the Power Method}
+	\label{sec:power-method}
+	
+	To estimate a strictly dominant eigenvalue for a given matrix $A$:
+	\begin{enumerate}
+		\item Select an initial vector $\vec{x_0}$, whose largest entry is 1.
+		
+		\item For $k = 0, 1, \ldots$: 
+		\begin{enumerate}[a.]
+			\item Compute $A\vec{x_k}$.
+			
+			\item Compute $\vec{x_{k + 1}} = \frac{1}{\mu_k}A\vec{x_k}$ where $\mu_k$ is the entry in $A\vec{x_k}$ that has the largest absolute value.
+		\end{enumerate}
+		
+		\item As this process is applied to greater values of $k$, $\mu_k$ will approach the dominant eigenvalue, and $\vec{x_k}$ approaches a corresponding eigenvector.
 	\end{enumerate}
 	\newpage
 	
@@ -1812,7 +1902,7 @@
 		
 		\item[*] a symbol used to represent any number
 		
-		\item[$\basiscoord{x}{B}$] the coordinates of $\vec{x}$ relative to the basis $B$
+		\item[$\basiscoordvec{x}{B}$] the coordinates of $\vec{x}$ relative to the basis $B$
 		
 		\item[$P_B$] a change-of-coordinates matrix relative to basis $B$
 		
@@ -1823,6 +1913,10 @@
 		\item[det$A$] the determinant of the matrix $A$.
 		
 		\item[$\lambda$] an eigenvalue corresponding to an eigenvector.
+		
+		\item[Re$(z)$] the real part of the complex number $z$.
+		
+		\item[Im$(z)$] the imaginary part of the complex number $z$.
 	\end{description}
 	
 	\subsection{Definitions}
