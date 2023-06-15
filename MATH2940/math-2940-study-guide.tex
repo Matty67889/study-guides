@@ -18,6 +18,8 @@
 \usepackage{systeme}
 % If uncommented, removes curly bracket created when making a system of equations with \systeme{} command
 \sysdelim..
+% for degree symbol
+\usepackage{gensymb}
 % for links, import this last
 \usepackage{hyperref}
 \hypersetup{
@@ -85,6 +87,7 @@
 % command that is the same as \mateq, with arg1 = A, arg2 = \vec{x}, arg3 = \lambda\vec{x} 
 \newcommand{\eigeneq}{\mateq{A}{\vec{x}}{\lambda\vec{x}}}
 
+% TODO: change the name of this command to finitevals, and make another one specifically for finite vecs that converts the arguments to vectors via $\vec{arg}$
 % command for writing finite set of vectors. only works in math environments
 % arg 1: letter of the variable that used to represent the vectors
 % arg 2: letter of variable used to represent the last underscored vector in the list
@@ -139,6 +142,25 @@
 % command for printing the characteristic equation
 % Usage: only use in math environments
 \newcommand{\chareq}{\text{det}(A - \lambda I) = 0}
+
+% \dotprod
+% command for printing the dot product of two numbers as an expression
+% Usage: use in math environments.
+% arg1: the left side of the dot product expression
+% arg2: the right side of the dor product expression
+\newcommand{\dotprod}[2]{#1 \cdot #2}
+% \dotprodvecs
+% the same thing as \dotprod, but the parameters that are passed in will be converted to vectors via \vec{arg1} and \vec{arg2}
+\newcommand{\dotprodvecs}[2]{\dotprod{\vec{#1}}{\vec{#2}}}
+
+% \norm
+% command for printing the norm of its argument (|| arg1 ||)
+% Usage: use in math environments.
+% arg1: the argument in between the bars
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+% \normvec
+% the same thing as \norm, but converts its argument to a vector via $\vec{arg1}$
+\newcommand{\normvec}[1]{\norm{\vec{#1}}}
 
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
@@ -1120,7 +1142,7 @@
 			\end{bmatrix}\\
 			P &=
 			\begin{bmatrix}
-				\text{Re}(\vec{v}) & \textbf{Im}(\vec{v})
+				\text{Re}(\vec{v}) & \text{Im}(\vec{v})
 			\end{bmatrix}
 		\end{align*}
 	\end{itemize}
@@ -1134,6 +1156,42 @@
 		\item a \textbf{trajectory} is $\vec{x_k}$ when it is graphed starting with different $\vec{x_0}$
 		
 		\item an \textbf{attractor} of a dynamical system is the point where all the trajectories in the system head to
+	\end{itemize}
+	
+	\subsection{Dot Products and Orthogonality}
+	\begin{itemize}
+		\item \textbf{inner product/dot product} of two vectors $\vec{u}$ and $\vec{v}$ in $\mathbb{R}^n$ is $\vec{u}^T\vec{v} = \finiteadd{u_1v_1}{u_2v_2}{u_nv_n} = \dotprodvecs{u}{v}$
+		
+		\item Properties of dot product (for any $\vec{u}$, $\vec{v}, \vec{w} \in \mathbb{R}^n$, scalar c):
+		\begin{enumerate}[i.]
+			\item $\dotprodvecs{u}{v} = \dotprodvecs{v}{u}$
+			
+			\item $\dotprod{(\vec{u} + \vec{v})}{\vec{w}} = \dotprodvecs{u}{w} + \dotprodvecs{v}{w}$
+			
+			\item $\dotprod{(c\vec{u})}{\vec{v}} = c(\dotprod{\vec{u}}{\vec{v}}) = \dotprod{\vec{u}}{c\vec{v}}$
+			
+			\item $\dotprodvecs{u}{u} \geq 0$ and $\dotprodvecs{u}{u} = 0 \Leftrightarrow \vec{u} = \vec{0}$
+			
+			\item scaling by scalar $c$ $\norm{c\vec{v}} = c\normvec{v}$
+		\end{enumerate}
+		
+		\item \textbf{length/norm} of a vector is $\sqrt{\dotprodvecs{x}{x}}$, denoted $\normvec{x}$
+		
+		\item \textbf{unit vector} is a vector with length 1 that points in the same direction of $\vec{v}$. The calculation for it is $\frac{1}{\normvec{v}}$
+		
+		\item the \textbf{distance} between $\vec{u}$ and $\vec{v}$ is dist($\vec{u}$, $\vec{v}$) = $\norm{\vec{u} - \vec{v}}$ = $\norm{\vec{v} - \vec{u}}$
+		
+		\item orthogonal vectors are vectors that are perpendicular to each other (90$\degree$ angle between each other). Abstractly, this means that for two vectors $\vec{u}$ and $\vec{v}$, $\dotprodvecs{u}{v} = 0$.
+		
+		\item see \autoref{thm:pythagorean-thm}
+		
+		\item $\dotprodvecs{u}{v} = \normvec{u}\normvec{v}\cos\theta$
+		
+		\item Given $W$ is a subspace of $\mathbb{R}^n$, $\vec{z} \in \mathbb{R}^n$ is orthogonal to $W$ means $\vec{z}$ is orthogonal to every $\vec{w} \in W$, an \textbf{orthogonal complement} is the set of all vectors orthogonal to subspace $W$. denoted $W^\perp$. pronounced "W perp"
+		
+		\item $\vec{x} \in W^\perp \Leftrightarrow \vec{x}$ is orthogonal to $\vec{w_i}$ for all $i = 1, 2, \ldots, k$.
+		
+		\item $W^\perp$ is a subspace of $\mathbb{R}^n$
 	\end{itemize}
 	\newpage
 	
@@ -1477,6 +1535,20 @@
 	\begin{theorem}
 		\label{thm:eigenvec-diagonlization-thm}
 		An $n \times n$ matrix with $n$ eigenvectors is diagonlizable.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:pythagorean-thm}
+		$\vec{u}$ and $\vec{v}$ are orthogonal $\Leftrightarrow$ $\norm{\vec{u} + \vec{v}}^2 = \vec{u}^2 + \vec{v}^2$
+	\end{theorem}
+	
+	\begin{theorem}
+		$A$ is $m \times n$ matrix:
+		\begin{enumerate}[a.]
+			\item (Row$A$)$^\perp$ = Nul$A$
+			
+			\item (Col$A$)$^\perp$ = Nul$A^T$
+		\end{enumerate}
 	\end{theorem}
 	\newpage
 	
@@ -1928,6 +2000,12 @@
 		\item[Re$(z)$] the real part of the complex number $z$.
 		
 		\item[Im$(z)$] the imaginary part of the complex number $z$.
+		
+		\item[$\normvec{x}$] the length/norm of a vector $\vec{x}$.
+		
+		\item[dist($\vec{u}$, $\vec{v}$)] the distance between the vectors $\vec{u}$ and $\vec{v}$.
+		
+		\item[$W^\perp$] the set of all vectors orthogonal to subspace $W$. Pronounced "W perp".
 	\end{description}
 	
 	\subsection{Definitions}
@@ -2151,5 +2229,17 @@
 		\item[trajectory] $\vec{x_k}$ when it is graphed starting with different $\vec{x_0}$ in a dynamical system.
 		
 		\item[attractor] of a dynamical system is the point where all the trajectories in a dynamical system head to
+		
+		\item[inner/dot product] inner product/dot product of two vectors $\vec{u}$ and $\vec{v}$ in $\mathbb{R}^n$ is $\vec{u}^T\vec{v} = \finiteadd{u_1v_1}{u_2v_2}{u_nv_n} = \dotprodvecs{u}{v}$
+		
+		\item[length/norm] the length of a vector, calculated with $\sqrt{\dotprodvecs{x}{x}}$, denoted $\normvec{x}$
+		
+		\item[unit vector] is a vector with length 1 that points in the same direction of $\vec{v}$. The calculation for it is $\frac{1}{\normvec{v}}$
+		
+		\item[distance] the distance between $\vec{u}$ and $\vec{v}$ is  $\norm{\vec{u} - \vec{v}}$.
+		
+		\item[orthogonality] if two objects are orthogonal, they are perpendicular to each other (90$\degree$ angle between each other). Abstractly, this means that for two vectors $\vec{u}$ and $\vec{v}$, $\dotprodvecs{u}{v} = 0$.
+		
+		\item[orthogonal complement] the set of all vectors orthogonal to a subspace $W$.
 	\end{description}
 \end{document}
