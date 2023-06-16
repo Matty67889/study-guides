@@ -1,3 +1,4 @@
+% TODO: replace all $\frac{num}{den}$ with \dfrac{num}{den}
 \documentclass[a4paper,12pt]{article}
 
 % input on every document for encoding
@@ -161,6 +162,13 @@
 % \normvec
 % the same thing as \norm, but converts its argument to a vector via $\vec{arg1}$
 \newcommand{\normvec}[1]{\norm{\vec{#1}}}
+
+% \orthoproj
+% command for printing the equation for finding the orgthogonal projection of a vector onto another vector
+% Usage: only use in math environments
+% arg1: the vector that is being projected
+% arg2: the vector that is being projected onto
+\newcommand{\orthoproj}[2]{\frac{\dotprodvecs{#1}{#2}}{\dotprodvecs{#2}{#2}}\vec{#2}}
 
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
@@ -1192,7 +1200,42 @@
 		\item $\vec{x} \in W^\perp \Leftrightarrow \vec{x}$ is orthogonal to $\vec{w_i}$ for all $i = 1, 2, \ldots, k$.
 		
 		\item $W^\perp$ is a subspace of $\mathbb{R}^n$
+		
+		\item see \autoref{thm:row-col-spc-perp-thm}
 	\end{itemize}
+	
+	\subsection{Orthogonal Sets and Projections}
+	\begin{itemize}
+		\item an \textbf{orthogonal set} is a set of vectors in which every vector is orthogonal to every vector besides itself (\textbf{pairwise orthogonal}). Defined mathematically, a set $\finitevecsset{u}{p}$ is said to be an orthogonal set if $\dotprodvecs{u_i}{u_j} = 0$ whenever $i \neq j$
+		
+		\item see \autoref{thm:lin-indep-ortho-set-thm}
+		
+		\item an \textbf{orthogonal basis} is an orthogonal set $S$ that does not contain $\vec{0}$
+		
+		\item Given $W\finitevecsset{u}{p}$ is orthogonal basis for subspace $W$:
+		
+		For each $\vec{y} \in W$, the weights in
+		\begin{equation*}
+			y = \finiteadd{c_1\vec{u_1}}{c_2\vec{u_2}}{c_p\vec{u_p}}
+		\end{equation*}
+		are given by
+		\begin{equation*}
+			c_j = \frac{\dotprodvecs{y}{u_1}}{\dotprodvecs{u_j}{u_j}} \: (j = 1, \ldots, p)
+		\end{equation*}
+		
+		\item $\vec{y} = \hat{y} + \vec{z}$ is a way of decomposing $\vec{y}$ into a sum of a vector that a multiple of another vector $\vec{u}$ and a vector orthogonal to $\vec{u}$. $\hat{y} = \alpha\vec{u}$ for some scalar $\alpha$, and $\vec{z}$ is some vector orthogonal to $\vec{u}$
+		
+		\item \textbf{orthogonal projection} of $\vec{y}$ onto $\vec{u}$ is $\hat{y} = \text{proj}_L\vec{y} = \orthoproj{y}{u}$, where $L$ is the subspace spanned by $\vec{u}$. The projection is onto $L$ and not just $\vec{u}$ because even if $\vec{u}$ is scaled by a number ($c\vec{u}$), the projection will be the same
+		
+		\item an \textbf{orthonormal set} is an orthogonal set of unit vectors. any subset of an orthonormal set is also orthonormal. an \textbf{orthonormal basis} is an orthonormal set that spans a subspace
+		
+		\item see \autoref{thm: u-t-u-eq-i-thm} and
+		\autoref{thm:orthonorm-cols-props-thm}
+		
+		\item see \autoref{thm:orthogonal-decomp-thm}, \autoref{thm:best-approx-thm}, and \autoref{thm:orthonormal-basis-proj-thm}
+	\end{itemize}
+	
+	\subsection{Gram-Schmidt and QR-Factorization}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1537,18 +1580,72 @@
 		An $n \times n$ matrix with $n$ eigenvectors is diagonlizable.
 	\end{theorem}
 	
-	\begin{theorem}
+	\begin{theorem}[Pythagorean Theorem]
 		\label{thm:pythagorean-thm}
 		$\vec{u}$ and $\vec{v}$ are orthogonal $\Leftrightarrow$ $\norm{\vec{u} + \vec{v}}^2 = \vec{u}^2 + \vec{v}^2$
 	\end{theorem}
 	
 	\begin{theorem}
+		\label{thm:row-col-spc-perp-thm}
 		$A$ is $m \times n$ matrix:
 		\begin{enumerate}[a.]
 			\item (Row$A$)$^\perp$ = Nul$A$
 			
 			\item (Col$A$)$^\perp$ = Nul$A^T$
 		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:lin-indep-ortho-set-thm}
+		An orthogonal set $S$ is linearly independent if $\vec{0} \notin S$ 
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm: u-t-u-eq-i-thm}
+		An $m \times n$ matrix $U$ has orthonormal columns $\Leftrightarrow$ $U^TU = I$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:orthonorm-cols-props-thm}
+		If $U$ is matrix with orthonormal columns, and $\vec{x}, \vec{y} \in \mathbb{R}^n$, then
+		\begin{enumerate}[a.]
+			\item $\norm{U\vec{x}} = \normvec{x}$
+			
+			\item $\dotprod{(U\vec{x})}{(U\vec{y})} = \dotprodvecs{x}{y}$
+			
+			\item $\dotprod{(U\vec{x})}{(U\vec{y})} = 0 \Leftrightarrow \dotprod{x}{y} = 0$
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}[Orthogonal Decomposition Theorem]
+		\label{thm:orthogonal-decomp-thm}
+		Given a subspace $W$, and a vector $\vec{y}$ there is a unique way of writing
+		\begin{equation*}
+			\vec{y} = \hat{y} + \vec{z}
+		\end{equation*}
+		In fact, if $\finitevecsset{u}{p}$ is an orthogonal basis for $W$, then \begin{equation*}
+			\text{proj}_W\vec{y} = \finiteadd{\orthoproj{y}{u_1}}{\orthoproj{y}{u_2}}{\orthoproj{y}{u_p}}
+		\end{equation*}
+		Additionally, $\text{proj}_W\vec{y}$ is $W$, and $\vec{y} - \text{proj}_W\vec{y}$ is in $W^\perp$. Also, if $\vec{y} \in W$, this is just writing $\vec{y}$ as a linear combination of the basis vectors.
+	\end{theorem}
+	
+	\begin{theorem}[Best Approximation Theorem]
+		\label{thm:best-approx-thm}
+		$\text{proj}_W\vec{y}$ is the vector closest to $\vec{y}$ in $W$, meaning $\text{dist}(\vec{y}, \text{proj}_W\vec{y}) < \text{dist}(\vec{y}, \vec{w})$ (for all $\vec{w} \in W$, $\vec{w} \notin \text{proj}_W\vec{y}$).
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:orthonormal-basis-proj-thm}
+		If $\finitevecsset{u}{p}$ orthonormal basis for $W$, then \begin{equation*}
+			\text{proj}_W\vec{y} = QQ^T\vec{y}
+		\end{equation*}
+		where
+		\begin{equation*}
+			Q =
+			\begin{bmatrix}
+				\vec{u_1} & \ldots & \vec{u_p}
+			\end{bmatrix}
+		\end{equation*}
 	\end{theorem}
 	\newpage
 	
@@ -2006,6 +2103,8 @@
 		\item[dist($\vec{u}$, $\vec{v}$)] the distance between the vectors $\vec{u}$ and $\vec{v}$.
 		
 		\item[$W^\perp$] the set of all vectors orthogonal to subspace $W$. Pronounced "W perp".
+		
+		\item[$\hat{y}$] the component of $\vec{y}$ that is a multiple of $\vec{u}$ when $\vec{y}$ is decomposed into the sum of a vector orthogonal to another vector $\vec{u}$ and a vector that is a multiple of $\vec{u}$.
 	\end{description}
 	
 	\subsection{Definitions}
@@ -2241,5 +2340,17 @@
 		\item[orthogonality] if two objects are orthogonal, they are perpendicular to each other (90$\degree$ angle between each other). Abstractly, this means that for two vectors $\vec{u}$ and $\vec{v}$, $\dotprodvecs{u}{v} = 0$.
 		
 		\item[orthogonal complement] the set of all vectors orthogonal to a subspace $W$.
+		
+		\item[pairwise orthogonal] the condition of being orthogonal to every other vector besides itself 3in a set.
+		
+		\item[orthogonal set] a set of vectors in which every vector is orthogonal to every vector besides itself. Defined mathematically, a set $\finitevecsset{u}{p}$ is said to be an orthogonal set if $\dotprodvecs{u_i}{u_j} = 0$ whenever $i \neq j$.
+		
+		\item[orthogonal basis] an orthogonal set $S$ that does not contain the zero vector.
+		
+		\item [orthogonal projection] an orthogonal projection of $\vec{y}$ onto $\vec{u}$ is $\hat{y} = \text{proj}_L\vec{y} = \orthoproj{y}{u}$, where $L$ is the subspace spanned by $\vec{u}$.
+		
+		\item[orthonormal set] an orthogonal set of vectors that have length 1.
+		
+		\item[orthonormal basis] is an orthonormal set that spans a subspace.
 	\end{description}
 \end{document}
