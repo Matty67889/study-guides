@@ -204,6 +204,8 @@
 	
 	\section{Usage}
 	This guide is meant to be a place to conveniently list most of the important information for the topic of linear algebra. It is also based on the Cornell course MATH 2940, as well as any other sources listed. This guide does not promise to cover all topics that one may be learning in a class they are participating in. It also does not promise to cover all the content from the Cornell course MATH 2940. This is best used either for review, or to read after reviewing the textbook on one's own time and using this to review the main ideas.
+	
+	Additionally, all theorems stated are not always exactly what the theorems actually say, but paraphrasings of them.
 	\newpage
 	
 	% Notes
@@ -1259,6 +1261,34 @@
 		
 		\item see \autoref{thm:least-squares-soln-set-thm} and \autoref{thm:least-squares-logical-equivalences}
 	\end{itemize}
+	
+	\subsection{Spectral Decomposition}
+	\begin{itemize}
+		\item \textbf{symmetric matrix} is a matrix such that $A = A^T$
+		
+		\item see \autoref{thm:symmetrix-mat-eigenvals-and-vecs-thm} and \autoref{thm:symmetric-mat-diagonlizability-thm}
+		
+		\item \textbf{spectral decomposition} of a matrix $A$ is the last simplification in the following series of equivalencies: 
+		\begin{flalign*}
+			A &= QDQ^T =
+			\begin{bmatrix}
+				\vec{q_1} & \ldots & \vec{q_n}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\lambda_1 & &0\\
+				&\ddots&\\
+				0 & &\lambda_n
+			\end{bmatrix}
+			\begin{bmatrix}
+				\vec{q^T_1}\\
+				\vdots\\
+				\vec{q^T_n}
+			\end{bmatrix}\\
+			&= \finiteadd{\lambda_1\vec{q_1}\vec{q^T_1}}{\lambda_2\vec{q_2}\vec{q^T_2}}{\lambda_n\vec{q_n}\vec{q^T_n}}
+		\end{flalign*}
+		
+		\item the set of eigenvalues of a matrix $A$ is sometimes called the \textbf{spectrum} of $A$
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1686,6 +1716,16 @@
 			
 			\item The matrix $A^TA$ is invertible.
 		\end{enumerate}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:symmetrix-mat-eigenvals-and-vecs-thm}
+		Two eigenvectors corresponding to distinct eigenvalues of a symmetric matrix $A$ are orthogonal.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:symmetric-mat-diagonlizability-thm}
+		If $A$ is symmetric, then $A$ can be orthogonally diagonalized to $A = QDQ^T$ where $Q$ has orthonormal columns, and $D$ is diagonal.
 	\end{theorem}
 	\newpage
 	
@@ -2435,5 +2475,14 @@
 		\item[Gram-Schmidt Process] the process of generating an orthogonal basis from a basis of a subspace.
 		
 		\item[normal equation] the equation $\normaleq$, whose solutions the least square solutions.
+		
+		\item[symmetric matrix] a matrix $A$ such that $A = A^T$.
+		
+		\item[spectral decomposition] of a matrix $A$ is another way of writing $A$:
+		\begin{equation*}
+			A = \finiteadd{\lambda_1\vec{q_1}\vec{q^T_1}}{\lambda_2\vec{q_2}\vec{q^T_2}}{\lambda_n\vec{q_n}\vec{q^T_n}}
+		\end{equation*}
+		
+		\item[spectrum] the spectrum of a matrix $A$ is the set of eigenvalues of a $A$.
 	\end{description}
 \end{document}
