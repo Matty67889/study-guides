@@ -170,6 +170,11 @@
 % arg2: the vector that is being projected onto
 \newcommand{\orthoproj}[2]{\frac{\dotprodvecs{#1}{#2}}{\dotprodvecs{#2}{#2}}\vec{#2}}
 
+% \normaleq
+% prints the least squares solution equation, A^TAx = A^Tb.
+% Usage: only use in math environments
+\newcommand{\normaleq}{A^TA\vec{x} = A^T\vec{b}}
+
 \title{MATH 2940 Study Guide}
 \author{Matthew Mentis-Cort}
 \date{January 24, 2023}
@@ -1245,6 +1250,15 @@
 		
 		\item see \nameref{sec:qr-factorization} for how to perform this factorization
 	\end{itemize}
+	
+	\subsection{Least Squares Solution}
+	\begin{itemize}
+		\item least squares solution is finding $\vec{x}$ that minimizes $\norm{A\vec{x} - \vec{b}}$. this is the closest point to $\vec{b}$ in Col$A$. helpful when an SOE is inconsistent
+		
+		\item simplifies to just solving $\normaleq$ (called the \textbf{normal equation}). Sometimes, the solution to the equation is denoted by $\hat{x}$.
+		
+		\item see \autoref{thm:least-squares-soln-set-thm} and \autoref{thm:least-squares-logical-equivalences}
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -1655,6 +1669,23 @@
 				\vec{u_1} & \ldots & \vec{u_p}
 			\end{bmatrix}
 		\end{equation*}
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:least-squares-soln-set-thm}
+		The set of least-squares solutions $\mateqaxb$ is equal to the solution set of $\normaleq$.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:least-squares-logical-equivalences}
+		If $A$ is $m \times n$ matrix, the following is either all true or all false:
+		\begin{enumerate}[a.]
+			\item The equation $\mateqaxb$ has a unique least squares solution for each $\vec{b}$ in $\mathbb{R}^m$.
+			
+			\item The columns of $A$ are linearly independent.
+			
+			\item The matrix $A^TA$ is invertible.
+		\end{enumerate}
 	\end{theorem}
 	\newpage
 	
@@ -2151,6 +2182,8 @@
 		\item[$W^\perp$] the set of all vectors orthogonal to subspace $W$. Pronounced "W perp".
 		
 		\item[$\hat{y}$] the component of $\vec{y}$ that is a multiple of $\vec{u}$ when $\vec{y}$ is decomposed into the sum of a vector orthogonal to another vector $\vec{u}$ and a vector that is a multiple of $\vec{u}$.
+		
+		\item[$\hat{x}$] the solution to the normal equation $\normaleq$.
 	\end{description}
 	
 	\subsection{Definitions}
@@ -2400,5 +2433,7 @@
 		\item[orthonormal basis] is an orthonormal set that spans a subspace.
 		
 		\item[Gram-Schmidt Process] the process of generating an orthogonal basis from a basis of a subspace.
+		
+		\item[normal equation] the equation $\normaleq$, whose solutions the least square solutions.
 	\end{description}
 \end{document}
