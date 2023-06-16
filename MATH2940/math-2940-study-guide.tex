@@ -1236,6 +1236,15 @@
 	\end{itemize}
 	
 	\subsection{Gram-Schmidt and QR-Factorization}
+	\begin{itemize}
+		\item to create orthogonal bases, \textbf{Gram-Schmidt Process} was developed. It is the process of taking a basis an creating an orthogonal basis by taking the parts of the vectors that are orthogonal to the other vectors and using those as the vectors for the orthogonal basis.
+		
+		\item see \nameref{sec:gram-schmidt-process}
+		
+		\item QR Factorization is a factorization of a \textbf{matrix with  linearly independent columns} in which $Q$'s columns are an orthonormal basis for Col$A$, and $R$ is an upper triangular matrix that gives information about how the orthonormal basis was created
+		
+		\item see \nameref{sec:qr-factorization} for how to perform this factorization
+	\end{itemize}
 	\newpage
 	
 	\section{Important Theorems}
@@ -2070,6 +2079,43 @@
 		
 		\item As this process is applied to greater values of $k$, $\mu_k$ will approach the dominant eigenvalue, and $\vec{x_k}$ approaches a corresponding eigenvector.
 	\end{enumerate}
+	
+	\subsection{Gram-Schmidt Process}
+	\label{sec:gram-schmidt-process}
+	Given a basis $\finitevecsset{x}{p}$, for a nonzero subspace $W$ of $\mathbb{R}^n$, to create an orthogonal basis $\finitevecsset{v}{p}$ for $W$, use the following equalities:
+	\begin{flalign*}
+		\vec{v_1} &= \vec{x_1}\\
+		\vec{v_2} &= \vec{x_2} - \orthoproj{x_2}{v_1}\\
+		\vec{v_3} &= \vec{x_3} - \orthoproj{x_3}{v_1} - \orthoproj{x_3}{v_2}\\
+		&\vdots\\
+		\vec{v_p} &= \vec{x_p} - \orthoproj{x_p}{v_1} - \orthoproj{x_p}{v_2} - \ldots - \orthoproj{x_p}{v_{p - 1}}
+	\end{flalign*}
+	
+	Explained in English, we take the first vector in the original basis and use it as the first vector in our orthogonal basis. Then, for every other vector in the original basis, we find the component of that vector orthogonal to each of the vectors in our orthogonal basis, and add this component to the orthogonal basis.
+	
+	\subsection{QR Factorization}
+	\label{sec:qr-factorization}
+	Given an $m \times n$ matrix
+	$A =
+	\begin{bmatrix}
+		\vec{x_1} & ... & \vec{x_n}
+	\end{bmatrix}$, where $\finitevecsset{x}{n}$ forms a basis for Col$A$ (linearly independent columns)
+	\begin{enumerate}
+		\item Use the Gram-Schmidt Process on $\finitevecsset{x}{n}$ to form an orthogonal basis for Col$A$. We will call this orthogonal basis $\finitevecsset{v}{n}$.
+		
+		\item Normalize all the vectors (make them vectors of length 1 by dividing each of them by their lengths) in $\finitevecsset{v}{n}$. We will call this orthonormal set $\finitevecsset{q}{n}$.
+		
+		\item
+		\begin{equation*}
+			A = 
+			\underset{Q}{
+				\begin{bmatrix}
+					\vec{q_1} & \ldots & \vec{q_n}
+				\end{bmatrix}
+			}
+			\underset{R}{Q^TA}
+		\end{equation*}
+	\end{enumerate}
 	\newpage
 	
 	% Terminology
@@ -2352,5 +2398,7 @@
 		\item[orthonormal set] an orthogonal set of vectors that have length 1.
 		
 		\item[orthonormal basis] is an orthonormal set that spans a subspace.
+		
+		\item[Gram-Schmidt Process] the process of generating an orthogonal basis from a basis of a subspace.
 	\end{description}
 \end{document}
