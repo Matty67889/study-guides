@@ -1086,10 +1086,7 @@
 		\item $A$ and $B$ are \textbf{similar} means there exists an invertible matrix $P$ such that $A = PBP^{-1}$
 		
 		\item see \autoref{similar-mat-char-eq-thm}
-	\end{itemize}
 		
-	\subsubsection{Transformations in the Eigenarena}
-	\begin{itemize}
 		\item $\lambda$ and $\vec{x}$ are an eigenvalue and eigenvector of $T$ means $T(\vec{x}) = \lambda\vec{x}$
 		
 		\item to find matrix for $T$ relative to basis $B$:
@@ -1288,6 +1285,17 @@
 		\end{flalign*}
 		
 		\item the set of eigenvalues of a matrix $A$ is sometimes called the \textbf{spectrum} of $A$
+	\end{itemize}
+	
+	\subsection{Singular Value Decomposition (SVD)}
+	\begin{itemize}
+		\item \textbf{singular value decomposition} is a decomposition for any matrix $A = U\Sigma V^T$, where $U$ is a matrix with orthonormal columns that are a basis of $\mathbb{R}^m$, $V$ is a matrix with orthonormal columns that are a basis of $\mathbb{R}^n$, and $\Sigma$ is a diagonal matrix
+		
+		\item a \textbf{singular value} is the square root of an eigenvalue in a singular value decomposition
+		
+		\item to find an SVD, see \nameref{sec:svd-method}
+		
+		\item see \autoref{thm:svd-best-approx-thm}. this is how SVDs are used for image compression!!
 	\end{itemize}
 	\newpage
 	
@@ -1726,6 +1734,11 @@
 	\begin{theorem}
 		\label{thm:symmetric-mat-diagonlizability-thm}
 		If $A$ is symmetric, then $A$ can be orthogonally diagonalized to $A = QDQ^T$ where $Q$ has orthonormal columns, and $D$ is diagonal.
+	\end{theorem}
+	
+	\begin{theorem}
+		\label{thm:svd-best-approx-thm}
+		Matrix of rank $k$ that "best approximates" $A$ is $\finiteadd{\sigma_1\vec{u_1}\vec{v^T_1}}{\sigma_2\vec{u_2}\vec{v^T_2}}{\sigma_k\vec{u_k}\vec{v^T_k}}$
 	\end{theorem}
 	\newpage
 	
@@ -2187,6 +2200,50 @@
 			\underset{R}{Q^TA}
 		\end{equation*}
 	\end{enumerate}
+	
+	\subsection{SVD Method}
+	\label{sec:svd-method}
+	
+	Given an $m \times n$ matrix $A$:
+	\begin{enumerate}
+		\item Find eigenvalues and eigenvectors of $A^TA$. Normalize the eigenvectors. The set of eigenvalues is $\finitevecsset{\lambda}{n}$ normalized eigenvectors are $\finitevecsset{v}{n}$
+		
+		\item Construct $V$.
+		\begin{equation*}
+			V =
+			\begin{bmatrix}
+				\vec{v_1} & \ldots & \vec{v_n}
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item Find the square roots of each of the eigenvalues (singular values). We will denote the set of singular values is $\finitevecsset{\sigma}{n}$.
+		
+		\item Construct $\Sigma$. $\Sigma$ is a matrix with the same size as $A$, with eigenvalues placed on a diagonal starting from the upper left hand corner. All other entries are 0.
+		\begin{equation*}
+			\Sigma =
+			\begin{bmatrix}
+				D & 0
+			\end{bmatrix}
+		\end{equation*}
+		where $D$ is
+		\begin{equation*}
+			D =
+			\begin{bmatrix}
+				\sigma_1 &  &  & \\
+				 & \sigma_2 &  & \\
+				 &  & \ddots &\\
+				 &  &  & \sigma_n
+			\end{bmatrix}
+		\end{equation*}
+		
+		\item Construct $U$. If $A$ has rank $r$, the first $r$ columns of $U$ are
+		\begin{equation*}
+			\vec{u_k} = \frac{1}{\sigma_k}A\vec{v_k} \text{ for } k = 1, 2, \ldots, r
+		\end{equation*}
+		If the problem asks for a \textbf{reduced SVD}, you may stop here. For a reduced SVD, $U$ only needs to have as many columns as there are singular values. Otherwise, move on to the next step.
+		
+		\item Additional columns of $U$ may be needed so that the columns of $U$ form a basis for $\mathbb{R}^m$ ($U$ must have as many columns as there are rows of $A$) This will provide the \textbf{extended SVD}. For each additional vector needed, use the Gram-Schmidt Process to find a vector orthogonal to the vectors already determined for the columns of $U$, and then add that vector to the set of vectors of $U$.
+	\end{enumerate}
 	\newpage
 	
 	% Terminology
@@ -2484,5 +2541,9 @@
 		\end{equation*}
 		
 		\item[spectrum] the spectrum of a matrix $A$ is the set of eigenvalues of a $A$.
+		
+		\item[singular value] the square root of an eigenvalue in a singular value decomposition.
+		
+		\item[singular value decomposition] a decomposition for any matrix $A = U\Sigma V^T$, where $U$ is a matrix with orthonormal columns that are a basis of $\mathbb{R}^m$, $V$ is a matrix with orthonormal columns that are a basis of $\mathbb{R}^n$, and $\Sigma$ is a diagonal matrix.
 	\end{description}
 \end{document}
